@@ -292,12 +292,12 @@ async function initializarePaginaHome() {
         }
     }
 
-    // ---- 2. ÎNCĂRCARE INTELIGENTĂ 2 SAU 3 PROIECTE ÎN FUNCȚIE DE LUNGIMEA TEXTULUI ----
+    // ---- 2. ÎNCĂRCARE DINAMICĂ 2 PROIECTE RECENTE (Codul tău existent) ----
     const { data: proiecteRecente, errorProj } = await _supabaseHome
         .from('proiecte')
         .select('*')
         .order('created_at', { ascending: false })
-        .limit(3); // Cerem maximum 3 proiecte din baza de date
+        .limit(2); 
 
     const containerProiecte = document.getElementById('proiecte-recents-target');
     if (containerProiecte) {
@@ -305,24 +305,7 @@ async function initializarePaginaHome() {
             containerProiecte.innerHTML = "<p style='color:#aaa; text-align:center; padding:10px; font-size:0.85rem;'>Niciun proiect momentan.</p>";
         } else {
             containerProiecte.innerHTML = "";
-            
-            // Verificăm dacă primele două proiecte au titluri prea lungi
-            let areTitluriLungi = false;
-            const proiecteDeVerificat = proiecteRecente.slice(0, 2);
-            
-            proiecteDeVerificat.forEach(p => {
-                if (p.nume_proiect && p.nume_proiect.length > 45) {
-                    areTitluriLungi = true; // Dacă un singur titlu e prea lung, activăm alerta
-                }
-            });
-
-            // Stabilim câte proiecte afișăm: dacă titlurile sunt lungi afișăm doar 2, altfel le lăsăm pe toate 3
-            const numarProiecteDeAfisat = areTitluriLungi ? 2 : proiecteRecente.length;
-
-            // Luăm doar numărul optim de proiecte stabilit mai sus
-            const proiecteFinale = proiecteRecente.slice(0, numarProiecteDeAfisat);
-
-            proiecteFinale.forEach(proj => {
+            proiecteRecente.forEach(proj => {
                 const poza = proj.imagine_url || 'https://images.unsplash.com/photo-1547483238-f400e65ccd56?auto=format&fit=crop&q=80&w=200';
                 let clasaFormatata = proj.clasa;
                 if (proj.clasa == 9) clasaFormatata = "IX";
