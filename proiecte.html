@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proiectele Elevilor - Revista de Istorie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="citat">
+                „Cine nu cunoaște trecutul, este condamnat să-l repete.” – <span class="autor">George Santayana</span>
+            </div>
+            <div class="top-bar-right">
+                <div class="search-box">
+    <input type="text" id="globalSearchInput" placeholder="Caută în site..." onkeypress="if(event.key === 'Enter') executaCautareGala()">
+    <button onclick="executaCautareGala()"><i class="fa-solid fa-magnifying-glass"></i></button>
+</div>
+
+<script>
+function executaCautareGala() {
+    const termen = document.getElementById('globalSearchInput').value.trim();
+    if (termen.length > 1) {
+        // Redirecționează către pagina de rezultate cu termenul ca parametru în URL
+        window.location.href = 'rezultate-cautare.html?q=' + encodeURIComponent(termen);
+    }
+}
+</script>
+            </div>
+        </div>
+    </div>
+
+    <header class="main-header">
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fa-solid fa-greece-building logo-icon"></i>
+                <div class="logo-text">
+                    <h1>REVISTA</h1>
+                    <h2>DE ISTORIE</h2>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">ACASĂ</a></li>
+                    <li><a href="articole.html">ARTICOLE </a></li>
+                    <li><a href="proiecte.html" class="active">PROIECTELE ELEVILOR</a></li>
+                    <li><a href="bac.html">SUBIECTE BAC</a></li>
+                    <li><a href="despre.html">DESPRE REVISTĂ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-banner" style="background-image: linear-gradient(rgba(28, 22, 17, 0.8), rgba(28, 22, 17, 0.8)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1400');">
+        <div class="container">
+            <h2>PROIECTELE ELEVILOR</h2>
+            <p style="color: #D5CFC6; font-style: italic; font-size: 0.9rem; margin-top: 5px;">Lucrări realizate de elevi la concursuri, olimpiade și proiecte școlare.</p>
+            <div class="banner-divider">♦</div>
+        </div>
+    </section>
+
+    <div class="container proiecte-page-wrapper">
+        
+       <div class="advanced-filter-bar">
+    <div class="dropdown-filter">
+        <i class="fa-solid fa-trophy icon-filter"></i>
+        <select id="filtru-concurs" onchange="filtreazaSiAfiseaza()">
+            <option value="TOATE">TOATE CONCURSURILE</option>
+        </select>
+    </div>
+
+    <div class="dropdown-filter">
+        <i class="fa-solid fa-graduation-cap icon-filter"></i>
+        <select id="filtru-clasa" onchange="filtreazaSiAfiseaza()">
+            <option value="TOATE">TOATE CLASELE</option>
+        </select>
+    </div>
+
+    <div class="dropdown-filter">
+        <i class="fa-solid fa-medal icon-filter"></i> <select id="filtru-premiu" onchange="filtreazaSiAfiseaza()">
+            <option value="TOATE">TOATE PREMIILE</option>
+        </select>
+    </div>
+
+    <div class="project-search">
+        <input type="text" id="cautare-text" placeholder="Caută proiect după titlu sau elevi..." oninput="filtreazaSiAfiseaza()">
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+</div>
+
+        <div class="main-content-layout">
+            
+            <div class="left-articles-column">
+                <div class="projects-catalog-grid" id="proiecte-target-grid">
+                    <p style="color:#aaa; text-align:center; padding: 20px; width:100%;">Se încarcă proiectele...</p>
+                </div>
+                <div class="pagination" id="paginatie-container"></div>
+            </div>
+
+            <aside class="right-sidebar-column">
+                <div class="sidebar-widget stats-widget">
+                    <h3>STATISTICI</h3>
+                    <div class="widget-divider"></div>
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <i class="fa-solid fa-file-lines text-red"></i>
+                            <div class="stat-info"><h5 id="stat-total-proiecte">0</h5><p>Proiecte</p></div>
+                        </div>
+                        <div class="stat-box">
+                            <i class="fa-solid fa-users text-gold"></i>
+                            <div class="stat-info"><h5 id="stat-total-elevi">0</h5><p>Elevi implicați</p></div>
+                        </div>
+                        <div class="stat-box">
+                            <i class="fa-solid fa-trophy text-brown"></i>
+                            <div class="stat-info"><h5 id="stat-total-concursuri">0</h5><p>Concursuri</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3>PROIECTE DEOSEBITE</h3>
+                    <div class="widget-divider"></div>
+                    <div class="pop-articles-list" id="proiecte-deosebite-target">
+                        <p style="color:#aaa; font-size:0.8rem; padding:10px;">Se încarcă proiectele deosebite...</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <div class="project-info-footer-bar">
+            <div class="info-footer-item">
+                <i class="fa-solid fa-file-shield text-gold"></i>
+                <div><h5>Formate acceptate</h5><p>PDF, PPTX, DOCX și ZIP</p></div>
+            </div>
+            <div class="info-footer-item">
+                <i class="fa-solid fa-circle-down text-gold"></i>
+                <div><h5>Descărcare securizată</h5><p>Toate fișierele sunt scanate</p></div>
+            </div>
+            <div class="info-footer-item">
+                <i class="fa-solid fa-user-check text-gold"></i>
+                <div><h5>Recunoașterea elevilor</h5><p>Fiecare proiect este evidențiat</p></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-citat">
+                <p class="citat-text">„Istoria este învățătoarea vieții.”</p>
+                <p class="citat-autor">— Cicero</p>
+            </div>
+            <div class="footer-newsletter" style="max-width: 280px; opacity: 0.6;">
+    <h4 style="font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 8px; color: #8C8275;">ABONEAZĂ-TE LA NOUTĂȚI (INDISPONIBIL)</h4>
+    <form class="newsletter-form" style="display: flex; gap: 5px; pointer-events: none;">
+        <input type="email" 
+               placeholder="Indisponibil temporar..." 
+               disabled 
+               style="font-size: 0.75rem; padding: 6px 10px; background: #2d2722; border: 1px solid #443c35; color: #777; cursor: not-allowed; width: 100%;">
+        <button type="submit" 
+                disabled 
+                style="font-size: 0.7rem; padding: 6px 10px; background: #554e48; color: #888; border: none; cursor: not-allowed; white-space: nowrap;">
+            ABONEAZĂ-TE
+        </button>
+    </form>
+</div>
+            <div class="footer-right" style="display: flex; flex-direction: column; gap: 20px;">
+    <div class="footer-links-group">
+        <h4 style="font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 12px; color: #8C8275; text-transform: uppercase;">Linkuri Utile</h4>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+            <li><a href="index.html" style="color: #FAF6F0; text-decoration: none; font-size: 0.85rem; opacity: 0.8; transition: opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">Acasă</a></li>
+            <li><a href="proiecte.html" style="color: #FAF6F0; text-decoration: none; font-size: 0.85rem; opacity: 0.8; transition: opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">Proiecte Elevi</a></li>
+            <li><a href="bac.html" style="color: #FAF6F0; text-decoration: none; font-size: 0.85rem; opacity: 0.8; transition: opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">Subiecte BAC</a></li>
+        </ul>
+    </div>
+
+    <p class="copyright" style="font-size: 0.75rem; color: #777; margin: 5px 0 0 0;">&copy; 2026 Revista de Istorie. Toate drepturile rezervate.</p>
+</div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL = "https://vkulkgccczdvvjweduos.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrdWxrZ2NjY3pkdnZqd2VkdW9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTE1NTEsImV4cCI6MjA5ODkyNzU1MX0.FttuCZisUYebymZZgIZ75YSB12CrNXZh4naJzbVSn8E";
+    
+    const _supabaseProiecte = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let toateProiectele = [];
+    let proiecteFiltrate = [];
+    let paginaCurenta = 1;
+    const proiectePePagina = 4;
+
+async function initializarePaginaProiecte() {
+    // 1. Încărcăm toate proiectele mai întâi
+    const { data, error } = await _supabaseProiecte.from('proiecte').select('*').order('created_at', { ascending: false });
+    if (error) { 
+        document.getElementById('proiecte-target-grid').innerHTML = "<p style='color:red;'>Eroare la conectare.</p>"; 
+        return; 
+    }
+    
+    toateProiectele = data || [];
+    proiecteFiltrate = [...toateProiectele];
+
+    // 2. Extragem concursurile unice direct din proiecte
+    const concursuriUnice = [...new Set(toateProiectele.map(p => p.concurs).filter(c => c !== null && c !== undefined && c.trim() !== ""))];
+    concursuriUnice.sort();
+
+    const selectConcurs = document.getElementById('filtru-concurs');
+    selectConcurs.innerHTML = '<option value="TOATE">TOATE CONCURSURILE</option>';
+    concursuriUnice.forEach(numeConcurs => {
+        selectConcurs.innerHTML += `<option value="${numeConcurs}">${numeConcurs.toUpperCase()}</option>`;
+    });
+    document.getElementById('stat-total-concursuri').innerText = concursuriUnice.length;
+
+    // 3. NOU -> Extragem premiile unice direct din proiecte (pentru noul Dropdown)
+    const premiiUnice = [...new Set(toateProiectele.map(p => p.premiu).filter(pr => pr !== null && pr !== undefined && pr.trim() !== ""))];
+    premiileUnice = premiiUnice.map(pr => pr.trim()); // Curățăm spațiile de la început/sfârșit
+    const premiiUniceCurate = [...new Set(premiileUnice)]; // Ne asigurăm că nu avem duplicate din cauza spațiilor
+    premiiUniceCurate.sort(); // Le sortăm alfabetic
+
+    const selectPremiu = document.getElementById('filtru-premiu');
+    if (selectPremiu) {
+        selectPremiu.innerHTML = '<option value="TOATE">TOATE PREMIILE</option>';
+        premiiUniceCurate.forEach(numePremiu => {
+            selectPremiu.innerHTML += `<option value="${numePremiu}">${numePremiu.toUpperCase()}</option>`;
+        });
+    }
+
+    // 4. Generare dinamică clase
+    const claseGasite = [...new Set(toateProiectele.map(p => p.clasa).filter(c => c !== null && c !== undefined))];
+    claseGasite.sort((a, b) => a - b);
+    const selectClasa = document.getElementById('filtru-clasa');
+    selectClasa.innerHTML = '<option value="TOATE">TOATE CLASELE</option>';
+    claseGasite.forEach(cls => {
+        selectClasa.innerHTML += `<option value="${cls}">Clasa a ${romanizeaza(cls)}-a</option>`;
+    });
+
+    // 5. Statistici live
+    document.getElementById('stat-total-proiecte').innerText = toateProiectele.length;
+    
+    let setEleviUnici = new Set();
+    toateProiectele.forEach(p => {
+        if(p.elev) {
+            p.elev.split(',').forEach(el => setEleviUnici.add(el.trim().toLowerCase()));
+        }
+    });
+    document.getElementById('stat-total-elevi').innerText = setEleviUnici.size;
+
+    afiseazaProiecteDeosebite();
+    filtreazaSiAfiseaza();
+}
+    function afiseazaProiecteDeosebite() {
+    const targetDeosebite = document.getElementById('proiecte-deosebite-target');
+    
+    // Verificăm coloana proiect_deosebit exact așa cum este în baza ta de date
+    const deosebite = toateProiectele.filter(p => p.proiect_deosebit === true);
+
+    if (deosebite.length === 0) {
+        targetDeosebite.innerHTML = "<p style='color:#aaa; font-size:0.8rem; padding:10px;'>Fără proiecte recomandate.</p>";
+        return;
+    }
+
+    targetDeosebite.innerHTML = "";
+    deosebite.forEach(proj => {
+        const img = proj.imagine_url || 'https://images.unsplash.com/photo-1547483238-f400e65ccd56?auto=format&fit=crop&q=80&w=100';
+        targetDeosebite.innerHTML += `
+            <div class="pop-art-item" style="cursor: pointer;" onclick="window.location.href='proiect.html?id=${proj.id}'">
+                <img src="${img}">
+                <div class="pop-art-meta">
+                    <h5 style="font-size:0.8rem;">${proj.nume_proiect}</h5>
+                    <span style="font-size:0.7rem; color:var(--gold);"><i class="fa-solid fa-star"></i> ${proj.premiu || 'Recomandat'}</span>
+                </div>
+            </div>`;
+    });
+}
+
+   function filtreazaSiAfiseaza() {
+    const conc = document.getElementById('filtru-concurs').value;
+    const cls = document.getElementById('filtru-clasa').value;
+    const prem = document.getElementById('filtru-premiu') ? document.getElementById('filtru-premiu').value : "TOATE";
+    const text = document.getElementById('cautare-text').value.toLowerCase().trim();
+
+    proiecteFiltrate = toateProiectele.filter(p => {
+        const matchConc = (conc === "TOATE" || (p.concurs && p.concurs === conc));
+        const matchCls = (cls === "TOATE" || String(p.clasa) === cls);
+        
+        // Verificare pentru noul filtru de premii
+        const matchPremiu = (prem === "TOATE" || (p.premiu && p.premiu.trim() === prem));
+        
+        const matchText = (!text || 
+                           (p.nume_proiect && p.nume_proiect.toLowerCase().includes(text)) || 
+                           (p.elev && p.elev.toLowerCase().includes(text)));
+                           
+        return matchConc && matchCls && matchPremiu && matchText;
+    });
+
+    paginaCurenta = 1; 
+    afiseazaCatalogPaginat();
+}
+
+   function afiseazaCatalogPaginat() {
+    const grid = document.getElementById('proiecte-target-grid');
+    if (proiecteFiltrate.length === 0) {
+        grid.innerHTML = "<p style='color:#aaa; text-align:center; padding:40px; width:100%;'>Niciun proiect găsit.</p>";
+        document.getElementById('paginatie-container').innerHTML = "";
+        return;
+    }
+
+    grid.innerHTML = "";
+    const startIdx = (paginaCurenta - 1) * proiectePePagina;
+    const endIdx = startIdx + proiectePePagina;
+    const curent = proiecteFiltrate.slice(startIdx, endIdx);
+
+    curent.forEach(proj => {
+        const imagineAfisata = proj.imagine_url || 'https://images.unsplash.com/photo-1547483238-f400e65ccd56?auto=format&fit=crop&q=80&w=400';
+        const formatFisier = (proj.tip_fisier || 'PDF').toUpperCase(); // Litere mari pentru badge-ul din colț
+        
+        let iconFisier = "fa-file-pdf";
+        if(formatFisier === "PPTX" || formatFisier === "PPT") iconFisier = "fa-file-powerpoint";
+        if(formatFisier === "DOCX" || formatFisier === "DOC") iconFisier = "fa-file-word";
+        if(formatFisier === "ZIP" || formatFisier === "RAR") iconFisier = "fa-folder-closed";
+
+        // Textul premiului jos în corp - acum cu culoarea aurie aprinsă (#ffcc00)
+       // În interiorul buclei curent.forEach(proj => { ... })
+
+// Generăm textul premiului doar dacă el există în baza de date
+const detaliuPremiuCorp = proj.premiu 
+    ? `<p class="proj-premiu-gold"><i class="fa-solid fa-trophy"></i> ${proj.premiu}</p>` 
+    : '';
+
+grid.innerHTML += `
+    <div class="catalog-project-card">
+        <div class="catalog-proj-img">
+            <img src="${imagineAfisata}">
+            <span class="file-badge ${formatFisier.toLowerCase()}">${formatFisier}</span>
+        </div>
+        <div class="catalog-proj-body">
+            <h4>${proj.nume_proiect}</h4>
+            <p class="proj-detail"><i class="fa-solid fa-award"></i> ${proj.concurs || 'Eveniment'}</p>
+            ${detaliuPremiuCorp}
+            <p class="proj-detail"><i class="fa-solid fa-user"></i> Elevi: ${proj.elev} | Clasa a ${romanizeaza(proj.clasa)}-a</p>
+            <div class="proj-footer">
+                <span class="file-size"><i class="fa-solid ${iconFisier}"></i> Format ${formatFisier}</span>
+                <a href="proiect.html?id=${proj.id}" class="btn-action-proj">DESCHIDE</a>
+            </div>
+        </div>
+    </div>`;
+    });
+
+    genereazaButoanePaginatie();
+}
+
+
+    genereazaButoanePaginatie();
+function genereazaButoanePaginatie() {
+    const container = document.getElementById('paginatie-container'); 
+    container.innerHTML = "";
+    const totalPagini = Math.ceil(proiecteFiltrate.length / proiectePePagina); 
+    if(totalPagini <= 1) return;
+
+    // Funcție mică ajutătoare pentru scroll exact la începutul catalogului
+    const scrollLaFiltre = () => {
+        const elementFiltre = document.querySelector('.advanced-filter-bar');
+        if (elementFiltre) {
+            elementFiltre.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    // Butonul Înapoi (Prev)
+    const btnPrev = document.createElement('button'); 
+    btnPrev.className = 'pag-btn'; 
+    btnPrev.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
+    btnPrev.disabled = paginaCurenta === 1;
+    btnPrev.onclick = () => { 
+        if(paginaCurenta > 1) { 
+            paginaCurenta--; 
+            afiseazaCatalogPaginat(); 
+            scrollLaFiltre();
+        } 
+    };
+    container.appendChild(btnPrev);
+
+    // Numerele paginilor (1, 2...)
+    for(let i = 1; i <= totalPagini; i++) {
+        const btn = document.createElement('button'); 
+        btn.className = `pag-number ${i === paginaCurenta ? 'active' : ''}`;
+        btn.innerText = i; 
+        btn.onclick = () => { 
+            paginaCurenta = i; 
+            afiseazaCatalogPaginat(); 
+            scrollLaFiltre();
+        };
+        container.appendChild(btn);
+    }
+
+    // Butonul Înainte (Next)
+    const btnNext = document.createElement('button'); 
+    btnNext.className = 'pag-btn'; 
+    btnNext.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+    btnNext.disabled = paginaCurenta === totalPagini;
+    btnNext.onclick = () => { 
+        if(paginaCurenta < totalPagini) { 
+            paginaCurenta++; 
+            afiseazaCatalogPaginat(); 
+            scrollLaFiltre();
+        } 
+    };
+    container.appendChild(btnNext);
+}
+
+    function romanizeaza(num) {
+        if (num === 0 || num === "0") return "Pregătitoare";
+        if (isNaN(num)) return num;
+        var digits = String(+num).split(""),
+            key = ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM",
+                   "","X","XX","XXX","XL","L","LX","LXX","LXXX","XC",
+                   "","I","II","III","IV","V","VI","VII","VIII","IX"],
+            roman = "", i = 3;
+        while (i--) roman = (key[+digits.pop() + (i * 10)] || "") + roman;
+        return Array(+digits.join("") + 1).join("M") + roman;
+    }
+
+    window.addEventListener('DOMContentLoaded', initializarePaginaProiecte);
+</script>
+</body>
+</html>

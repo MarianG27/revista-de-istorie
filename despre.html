@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articole de Istorie - Revista de Istorie</title>
+    <!-- Fonturi Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Folosim exact același fișier de stiluri -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="citat">
+                „Cine nu cunoaște trecutul, este condomnat să-l repete.” – <span class="autor">George Santayana</span>
+            </div>
+            <div class="top-bar-right">
+                <div class="search-box">
+    <input type="text" id="globalSearchInput" placeholder="Caută în site..." onkeypress="if(event.key === 'Enter') executaCautareGala()">
+    <button onclick="executaCautareGala()"><i class="fa-solid fa-magnifying-glass"></i></button>
+</div>
+
+<script>
+function executaCautareGala() {
+    const termen = document.getElementById('globalSearchInput').value.trim();
+    if (termen.length > 1) {
+        // Redirecționează către pagina de rezultate cu termenul ca parametru în URL
+        window.location.href = 'rezultate-cautare.html?q=' + encodeURIComponent(termen);
+    }
+}
+</script>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER PRINCIPAL -->
+    <header class="main-header">
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fa-solid fa-greece-building logo-icon"></i>
+                <div class="logo-text">
+                    <h1>REVISTA</h1>
+                    <h2>DE ISTORIE</h2>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">ACASĂ</a></li>
+                    <li><a href="articole.html" >ARTICOLE</a></li>
+                    <li><a href="proiecte.html">PROIECTELE ELEVILOR</a></li>
+                    <li><a href="bac.html">SUBIECTE BAC</a></li>
+                    <li><a href="despre.html" class="active">DESPRE REVISTĂ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+<main style="max-width: 1200px; margin: 40px auto; padding: 0 20px; font-family: 'Inter', sans-serif;">
+    
+    <!-- Titlu Pagina -->
+    <div style="text-align: center; margin-bottom: 50px;">
+        <h2 style="font-family: 'Cinzel', serif; color: #1C1611; font-size: 2.4rem; letter-spacing: 1px; margin-bottom: 10px;">DESPRE REVISTĂ</h2>
+        <div style="width: 60px; height: 2px; background: #C29B53; margin: 15px auto;"></div>
+    </div>
+
+    <!-- 1. GRID-UL CU TEXT ȘI POZA FRUMOASĂ -->
+    <div class="about-grid-row" style="display: flex; gap: 50px; align-items: center; margin-bottom: 60px; flex-wrap: wrap;">
+        
+        <!-- Caseta cu Textul Prezentării -->
+        <div style="flex: 1; min-width: 300px;">
+            <h3 style="font-family: 'Cinzel', serif; color: #C29B53; font-size: 1.6rem; margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid #DCD5C9; padding-bottom: 10px;">Cine suntem?</h3>
+            <p style="color: #443C35; line-height: 1.7; font-size: 0.95rem; text-align: justify; margin-bottom: 15px;">
+                Revista de Istorie s-a născut dintr-o inițiativă educațională modernă, având scopul de a aduce mai aproape de tineri studiul trecutului prin metode interactive și accesibile. Ne propunem să fim atât o platformă culturală de informare, cât și un sprijin real pentru elevii de liceu.
+            </p>
+            <p style="color: #443C35; line-height: 1.7; font-size: 0.95rem; text-align: justify; margin-bottom: 0;">
+                Aici adunăm la un loc cele mai bune lucrări și proiecte de cercetare realizate de elevi pentru diverse olimpiade și concursuri, oferindu-le vizibilitatea pe care o merită. De asemenea, punem la dispoziție materiale valoroase pentru pregătirea examenului național de Bacalaureat.
+            </p>
+        </div>
+
+        <!-- Caseta cu POZA DE PREZENTARE -->
+        <div style="flex: 1; min-width: 300px;">
+            <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=800" 
+                 alt="Cărți vechi și studiu" 
+                 style="width: 100%; height: 380px; object-fit: cover; border-radius: 4px; border: 1px solid #DCD5C9; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: block;">
+        </div>
+
+    </div>
+
+    <!-- 2. SECȚIUNEA ECHIPĂ CU ANIMAȚIE LA HOVER -->
+    <div style="background: #ffffff; border: 1px solid #DCD5C9; padding: 50px 30px; border-radius: 4px; margin-bottom: 40px;">
+        <h3 style="font-family: 'Cinzel', serif; color: #1C1611; font-size: 1.6rem; margin-top: 0; margin-bottom: 40px; text-align: center; letter-spacing: 1px;">ECHIPA DE REALIZARE</h3>
+        
+        <div style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap;">
+            
+            <!-- Card Dezvoltator (Cu stilurile de animație din JavaScript de mai jos) -->
+            <div class="animated-team-card" 
+                 style="background: #FAF6F0; border: 1px solid #EAE5DC; padding: 35px 25px; width: 300px; text-align: center; border-radius: 4px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease, border-color 0.3s ease; cursor: pointer;"
+                 onmouseenter="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 12px 20px rgba(28, 22, 17, 0.08)'; this.style.borderColor='#C29B53';"
+                 onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#EAE5DC';">
+                
+                <div style="width: 70px; height: 70px; background: #1C1611; color: #C29B53; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; font-size: 1.6rem; border: 1px solid #C29B53;">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <h4 style="font-family: 'Cinzel', serif; color: #1C1611; margin: 0 0 6px 0; font-size: 1.15rem; font-weight: 600;">Dezvoltare Software</h4>
+                <span style="color: #C29B53; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 15px;">Tehnologie & UI Design</span>
+                <p style="color: #77706A; font-size: 0.85rem; line-height: 1.5; margin: 0;">Responsabilă cu arhitectura bazei de date Supabase, implementarea sistemelor de căutare și designul interactiv.</p>
+            </div>
+
+            <!-- Card Coordonatori / Editori -->
+            <div class="animated-team-card" 
+                 style="background: #FAF6F0; border: 1px solid #EAE5DC; padding: 35px 25px; width: 300px; text-align: center; border-radius: 4px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease, border-color 0.3s ease; cursor: pointer;"
+                 onmouseenter="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 12px 20px rgba(28, 22, 17, 0.08)'; this.style.borderColor='#C29B53';"
+                 onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#EAE5DC';">
+                
+                <div style="width: 70px; height: 70px; background: #1C1611; color: #C29B53; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; font-size: 1.6rem; border: 1px solid #C29B53;">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+                <h4 style="font-family: 'Cinzel', serif; color: #1C1611; margin: 0 0 6px 0; font-size: 1.15rem; font-weight: 600;">Conținut & Resurse</h4>
+                <span style="color: #C29B53; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 15px;">Cercetare Istorică</span>
+                <p style="color: #77706A; font-size: 0.85rem; line-height: 1.5; margin: 0;">Grup de elevi pasionați și profesori coordonatori care asigură corectitudinea materialelor și selectează proiectele publicate.</p>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+   </div> <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-citat">
+                <p class="citat-text">„Istoria este învățătoarea vieții.”</p>
+                <p class="citat-autor">— Cicero</p>
+            </div>
+            <div class="footer-newsletter" style="max-width: 280px; opacity: 0.6;">
+    <h4 style="font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 8px; color: #8C8275;">ABONEAZĂ-TE LA NOUTĂȚI (INDISPONIBIL)</h4>
+    <form class="newsletter-form" style="display: flex; gap: 5px; pointer-events: none;">
+        <input type="email" 
+               placeholder="Indisponibil temporar..." 
+               disabled 
+               style="font-size: 0.75rem; padding: 6px 10px; background: #2d2722; border: 1px solid #443c35; color: #777; cursor: not-allowed; width: 100%;">
+        <button type="submit" 
+                disabled 
+                style="font-size: 0.7rem; padding: 6px 10px; background: #554e48; color: #888; border: none; cursor: not-allowed; white-space: nowrap;">
+            ABONEAZĂ-TE
+        </button>
+    </form>
+</div>
+            <div class="footer-right" style="display: flex; flex-direction: column; gap: 20px;">
+    <div class="footer-links-group">
+        <h4 style="font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 12px; color: #8C8275; text-transform: uppercase;">Linkuri Utile</h4>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+            <li><a href="index.html" style="color: #FAF6F0; text-decoration: none; font-size: 0.85rem; opacity: 0.8; transition: opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">Acasă</a></li>
+            <li><a href="proiecte.html" style="color: #FAF6F0; text-decoration: none; font-size: 0.85rem; opacity: 0.8; transition: opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">Proiecte Elevi</a></li>
+            <li><a href="bac.html" style="color: #FAF6F0; text-decoration: none; font-size: 0.85rem; opacity: 0.8; transition: opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">Subiecte BAC</a></li>
+        </ul>
+    </div>
+        </div>
+    </footer>
+    
+
+
+</body>
+</html>

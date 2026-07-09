@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panou Administrare Avansat - Site Istorie</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #1a1a1a; color: #fff; margin: 0; padding: 20px; }
+        .container { max-width: 950px; margin: 0 auto; background: #2d2d2d; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        h1, h2, h3 { color: #ffcc00; text-align: center; }
+        .form-group { margin-bottom: 20px; }
+        .form-group.checkbox { display: flex; align-items: center; gap: 10px; }
+        .form-group.checkbox input { width: auto; scale: 1.3; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #ccc; }
+        input[type="text"], input[type="email"], input[type="password"], textarea, select { width: 100%; padding: 10px; border: 1px solid #444; background: #222; color: #fff; border-radius: 4px; box-sizing: border-box; }
+        textarea { height: 120px; resize: vertical; }
+        button { background: #ffcc00; color: #000; border: none; padding: 12px 20px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; width: 100%; transition: background 0.3s; }
+        button:hover { background: #e6b800; }
+        
+        .tabs { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid #444; padding-bottom: 10px; flex-wrap: wrap; }
+        .tab-btn { background: #333; color: #aaa; border: 1px solid #444; padding: 10px 15px; cursor: pointer; font-size: 14px; width: auto; flex: 1; min-width: 150px; }
+        .tab-btn.active { background: #ffcc00; color: #000; font-weight: bold; border-color: #ffcc00; }
+        .section { display: none; }
+        .section.active { display: block; }
+
+        .item-list { margin-top: 20px; }
+        .item-card { background: #222; border: 1px solid #444; padding: 15px; border-radius: 6px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .item-info h4 { margin: 0 0 5px 0; color: #ffcc00; }
+        .item-info p { margin: 0; font-size: 14px; color: #aaa; }
+        .item-actions { display: flex; gap: 10px; }
+        .btn-modifica { background: #ffcc00; color: #000; padding: 6px 12px; font-size: 14px; width: auto; }
+        .btn-sterge { background: #cc3333; color: #fff; padding: 6px 12px; font-size: 14px; width: auto; }
+        .btn-sterge:hover { background: #992222; }
+
+        .gestiuni-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        @media(max-width: 768px) { .gestiuni-wrapper { grid-template-columns: 1fr; } }
+
+        .admin-tags-container { display: flex; flex-direction: column; gap: 5px; margin-top: 15px; padding: 10px; background: #222; border: 1px solid #444; border-radius: 5px; max-height: 200px; overflow-y: auto; }
+        .admin-cat-tag { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px dashed #444; }
+        .cat-action-btn { background: none; border: none; cursor: pointer; font-size: 14px; padding: 0 2px; width: auto; display: inline; }
+        
+        .elev-input-row { display: flex; gap: 10px; margin-bottom: 8px; }
+        .btn-remove-elev { background: #cc3333; color: white; width: auto; padding: 0 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="auth-sec">
+            <h2>Autentificare Administrator (Supabase Auth)</h2>
+            <div class="form-group">
+                <label>Adresă Email:</label>
+                <input type="email" id="admin-email" placeholder="Introdu email-ul de admin...">
+            </div>
+            <div class="form-group">
+                <label>Parolă de Acces:</label>
+                <input type="password" id="admin-pass" placeholder="Introdu parola...">
+            </div>
+            <button onclick="checkAuth()">Intră în Panou</button>
+        </div>
+
+        <div id="admin-panel" style="display: none;">
+            <h1>Panou de Control Avansat</h1>
+            <div id="admin-msg"></div>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('articol-sec')">Adaugă Articol</button>
+                <button class="tab-btn" onclick="switchTab('categorii-sec')">Gestionare Liste Dropdown</button>
+                <button class="tab-btn" onclick="switchTab('proiect-sec')">Adaugă Proiect Elev</button>
+                <button class="tab-btn" onclick="switchTab('subiect-sec')">Adaugă Subiect BAC</button>
+                <button class="tab-btn" onclick="switchTab('liste-sec')">Gestionare Conținut (Modifică/Șterge)</button>
+            </div>
+
+            <!-- TAB 1: ARTICOLE -->
+            <div id="articol-sec" class="section active">
+                <h2 id="form-title-articol">Adaugă un Articol Nou</h2>
+                <form id="form-articol">
+                    <input type="hidden" id="articol-id-hidden" value="">
+                    <div class="form-group">
+                        <label>Titlu Articol:</label>
+                        <input type="text" id="art-titlu" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Categorie Epocă:</label>
+                        <select id="art-categorie" required>
+                            <option value="">-- Se încarcă categoriile... --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Autor:</label>
+                        <input type="text" id="art-autor" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Conținut Text:</label>
+                        <textarea id="art-continut" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Încarcă Imagine Poza:</label>
+                        <input type="file" id="art-imagine" accept="image/*">
+                        <small id="poza-veche-hint" style="color: #ffcc00; display: none;"><br>(Lăsați gol dacă nu doriți schimbarea pozei actuale la editare)</small>
+                    </div>
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="art-recomandat">
+                        <label for="art-recomandat">Pune ca articol RECOMANDAT (Apare sus pe prima pagină)</label>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit" id="btn-submit-articol">Publică Articolul</button>
+                        <button type="button" id="btn-anuleaza-edit-art" style="display: none; background: #555;" onclick="reseteazaFormularArticol()">Anulează Editarea</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- TAB 2: GESTIONARE DROPDOWNS -->
+            <div id="categorii-sec" class="section">
+                <div class="gestiuni-wrapper">
+                    <div>
+                        <h2>Gestionare Categorii Articole</h2>
+                        <div class="form-group" style="display: flex; gap: 10px;">
+                            <input type="text" id="new-cat-input" placeholder="Categorie nouă...">
+                            <button type="button" id="btn-add-cat-direct" style="width: auto; white-space: nowrap;">➕ Adaugă</button>
+                        </div>
+                        <div id="admin-categories-list" class="admin-tags-container"></div>
+                    </div>
+                    <div>
+                        <h2>Gestionare Concursuri Proiecte</h2>
+                        <div class="form-group" style="display: flex; gap: 10px;">
+                            <input type="text" id="new-conc-input" placeholder="Concurs nou...">
+                            <button type="button" id="btn-add-conc-direct" style="width: auto; white-space: nowrap;">➕ Adaugă</button>
+                        </div>
+                        <div id="admin-contests-list" class="admin-tags-container"></div>
+                    </div>
+                </div>
+                <div class="gestiuni-wrapper">
+                    <div>
+                        <h2>Gestionare Ani BAC</h2>
+                        <div class="form-group" style="display: flex; gap: 10px;">
+                            <input type="text" id="new-an-input" placeholder="An nou (ex: 2027)...">
+                            <button type="button" id="btn-add-an-direct" style="width: auto; white-space: nowrap;">➕ Adaugă</button>
+                        </div>
+                        <div id="admin-ani-list" class="admin-tags-container"></div>
+                    </div>
+                    <div>
+                        <h2>Gestionare Sesiuni BAC</h2>
+                        <div class="form-group" style="display: flex; gap: 10px;">
+                            <input type="text" id="new-sesiune-input" placeholder="Sesiune nouă (ex: Sesiunea Iulie)...">
+                            <button type="button" id="btn-add-sesiune-direct" style="width: auto; white-space: nowrap;">➕ Adaugă</button>
+                        </div>
+                        <div id="admin-sesiuni-list" class="admin-tags-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: PROIECTE -->
+            <div id="proiect-sec" class="section">
+                <h2 id="form-title-proiect">Adaugă un Proiect Nou (Elev)</h2>
+                <form id="form-proiect">
+                    <input type="hidden" id="proiect-id-hidden" value="">
+                    <div class="form-group">
+                        <label>Nume Proiect:</label>
+                        <input type="text" id="proj-nume" placeholder="Ex: Unirea Principatelor Române" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Elevi Participanți:</label>
+                        <div id="elevi-inputs-container">
+                            <div class="elev-input-row">
+                                <input type="text" class="proj-elev-nume" placeholder="Nume și Prenume Elev" required>
+                            </div>
+                        </div>
+                        <button type="button" onclick="adaugaCampElev()" style="background:#444; color:#fff; font-size:14px; padding:6px 12px; width:auto; margin-top:5px;">➕ Adaugă alt elev (opțional)</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Clasa:</label>
+                        <select id="proj-clasa" required>
+                            <option value="">-- Alege Clasa --</option>
+                            <option value="9">Clasa a IX-a</option>
+                            <option value="10">Clasa a X-a</option>
+                            <option value="11">Clasa a XI-a</option>
+                            <option value="12">Clasa a XII-a</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Concurs / Eveniment:</label>
+                        <select id="proj-concurs" required>
+                            <option value="">-- Se încarcă concursurile... --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Premiu Obținut (opțional):</label>
+                        <input type="text" id="proj-premiu" placeholder="Ex: Premiul I Național, Mențiune">
+                    </div>
+                    <div class="form-group">
+                        <label>Încarcă Imagine Reprezentativă (Copertă):</label>
+                        <input type="file" id="proj-imagine" accept="image/*">
+                        <small class="edit-hint-proj" style="color: #ffcc00; display: none;"><br>(Lăsați gol pentru a păstra coperta veche)</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Încarcă Fișierul Proiectului:</label>
+                        <input type="file" id="proj-fisier">
+                        <small class="edit-hint-proj" style="color: #ffcc00; display: none;"><br>(Lăsați gol pentru a păstra fișierul vechi)</small>
+                    </div>
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="proj-deosebit">
+                        <label for="proj-deosebit" style="color: #ffcc00; font-weight: bold;">Marchează ca PROIECT DEOSEBIT</label>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit" id="btn-submit-proiect">Publică Proiectul</button>
+                        <button type="button" id="btn-anuleaza-edit-proj" style="display: none; background: #555;" onclick="reseteazaFormularProiect()">Anulează Editarea</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- TAB 4: ADĂUGĂ SUBIECT BAC -->
+            <div id="subiect-sec" class="section">
+                <h2 id="form-title-subiect">Adaugă un Subiect BAC Nou</h2>
+                <form id="form-subiect">
+                    <input type="hidden" id="subiect-id-hidden" value="">
+                    
+                    <div class="form-group">
+                        <label>Titlu Subiect (Se afișează mare sus):</label>
+                        <input type="text" id="sub-titlu" placeholder="Ex: Subiect Istorie Oficial - Toate Profilele" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Anul:</label>
+                        <select id="sub-an" required>
+                            <option value="">-- Se încarcă anii... --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Sesiune:</label>
+                        <select id="sub-sesiune" required>
+                            <option value="">-- Se încarcă sesiunile... --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Încarcă Fișier PDF / Document Subiect:</label>
+                        <input type="file" id="sub-fisier" accept=".pdf,.doc,.docx">
+                        <small class="edit-hint-sub" style="color: #ffcc00; display: none;"><br>(Lăsați gol dacă nu doriți schimbarea fișierului actual la editare)</small>
+                    </div>
+
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit" id="btn-submit-subiect">Salvează Subiect BAC</button>
+                        <button type="button" id="btn-anuleaza-edit-sub" style="display: none; background: #555;" onclick="reseteazaFormularSubiect()">Anulează Editarea</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- TAB 5: GESTIONARE CONȚINUT LISTE -->
+            <div id="liste-sec" class="section">
+                <h2>Modifică sau Șterge Conținutul Existent</h2>
+                
+                <h3 style="text-align:left; margin-top:20px; border-bottom: 1px solid #444; padding-bottom:5px;">Subiecte BAC Postate</h3>
+                <div id="liste-subiecte" class="item-list"></div>
+
+                <h3 style="text-align:left; margin-top:30px; border-bottom: 1px solid #444; padding-bottom:5px;">Articole Postate</h3>
+                <div id="liste-articole" class="item-list"></div>
+
+                <h3 style="text-align:left; margin-top:40px; border-bottom: 1px solid #444; padding-bottom:5px;">Proiecte Elevi Postate</h3>
+                <div id="liste-proiecte" class="item-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://vkulkgccczdvvjweduos.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrdWxrZ2NjY3pkdnZqd2VkdW9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTE1NTEsImV4cCI6MjA5ODkyNzU1MX0.FttuCZisUYebymZZgIZ75YSB12CrNXZh4naJzbVSn8E";
+        
+        const _supabaseGrid = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let cacheArticole = [];
+        let cacheProiecte = [];
+        let cacheSubiecte = [];
+        let toateCategoriile = [];
+        let toateConcursurile = [];
+        let totiAnii = [];
+        let toateSesiunile = [];
+
+        async function checkAuth() {
+            const email = document.getElementById('admin-email').value.trim();
+            const pass = document.getElementById('admin-pass').value;
+            if(!email || !pass) { alert("Te rugăm să completezi ambele câmpuri!"); return; }
+
+            const { data, error } = await _supabaseGrid.auth.signInWithPassword({ email: email, password: pass });
+            if (error) { alert("Eroare de autentificare: " + error.message); } 
+            else {
+                document.getElementById('auth-sec').style.display = "none";
+                document.getElementById('admin-panel').style.display = "block";
+                await incarcaCategoriiAdmin();
+                await incarcaConcursuriAdmin();
+                incarcaAniBACAdmin();
+                incarcaSesiuniBACAdmin();
+                await incarcaContinutGestionare();
+            }
+        }
+
+        function switchTab(idSectiune) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(idSectiune).classList.add('active');
+            const btns = document.querySelectorAll('.tabs .tab-btn');
+            if(idSectiune === 'articol-sec') btns[0].classList.add('active');
+            if(idSectiune === 'categorii-sec') btns[1].classList.add('active');
+            if(idSectiune === 'proiect-sec') btns[2].classList.add('active');
+            if(idSectiune === 'subiect-sec') btns[3].classList.add('active');
+            if(idSectiune === 'liste-sec') btns[4].classList.add('active');
+        }
+
+        function showMsg(text, isError = false) {
+            const msgEl = document.getElementById('admin-msg');
+            msgEl.innerText = text; msgEl.style.padding = "10px"; msgEl.style.marginBottom = "15px"; msgEl.style.borderRadius = "4px"; msgEl.style.fontWeight = "bold";
+            msgEl.style.background = isError ? "#cc3333" : "#339933"; msgEl.style.color = "#fff";
+            setTimeout(() => { msgEl.innerText = ""; msgEl.style.background = "transparent"; }, 4000);
+        }
+
+        function adaugaCampElev(valoare = "") {
+            const container = document.getElementById('elevi-inputs-container');
+            const row = document.createElement('div');
+            row.className = 'elev-input-row';
+            row.innerHTML = `
+                <input type="text" class="proj-elev-nume" placeholder="Nume și Prenume Elev" value="${valoare}" required>
+                <button type="button" class="btn-remove-elev" onclick="this.parentElement.remove()">❌</button>
+            `;
+            container.appendChild(row);
+        }
+
+        // --- GESTIONARE CATEGORII ---
+        async function incarcaCategoriiAdmin() {
+            const { data: categorii } = await _supabaseGrid.from('categorii').select('*').order('nume', { ascending: true });
+            toateCategoriile = categorii || [];
+            const select = document.getElementById('art-categorie');
+            select.innerHTML = '<option value="">-- Selectează o Categorie --</option>';
+            const containerLista = document.getElementById('admin-categories-list');
+            containerLista.innerHTML = toateCategoriile.length === 0 ? "<p style='color:#aaa;'>Fără categorii.</p>" : "";
+
+            toateCategoriile.forEach(cat => {
+                const opt = document.createElement('option'); opt.value = cat.nume; opt.textContent = cat.nume;
+                select.appendChild(opt);
+                containerLista.innerHTML += `<div class="admin-cat-tag"><span>${cat.nume}</span><div>
+                    <button type="button" class="cat-action-btn" onclick="editeazaCategoria('${cat.nume}')">✏️</button>
+                    <button type="button" class="cat-action-btn" onclick="stergeCategoria('${cat.nume}')">❌</button>
+                </div></div>`;
+            });
+        }
+
+        document.getElementById('btn-add-cat-direct').addEventListener('click', async () => {
+            const input = document.getElementById('new-cat-input'); if (!input.value.trim()) return;
+            await _supabaseGrid.from('categorii').insert([{ nume: input.value.trim() }]);
+            input.value = ""; await incarcaCategoriiAdmin(); showMsg("Categorie adăugată!");
+        });
+
+        async function editeazaCategoria(numeVechi) {
+            const nou = prompt("Schimbă numele categoriei în:", numeVechi);
+            if (!nou || nou.trim() === "" || nou.trim() === numeVechi) return;
+            await _supabaseGrid.from('categorii').update({ nume: nou.trim() }).eq('nume', numeVechi);
+            await _supabaseGrid.from('articole').update({ categorie: nou.trim() }).eq('categorie', numeVechi);
+            await incarcaCategoriiAdmin(); await incarcaContinutGestionare();
+        }
+
+        // --- BLOCARE ȘTERGERE CATEGORIE ---
+async function stergeCategoria(numeCat) {
+    // Verificăm dacă există articole care folosesc această categorie
+    const { data: articoleAsociate, error } = await _supabaseGrid
+        .from('articole')
+        .select('id')
+        .eq('categorie', numeCat);
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    if (articoleAsociate && articoleAsociate.length > 0) {
+        alert(`❌ Nu poți șterge categoria "${numeCat}" deoarece este folosită în ${articoleAsociate.length} articol(e)! Modifică sau șterge mai întâi acele articole.`);
+        return;
+    }
+
+    if (confirm(`Sigur dorești să ștergi definitiv categoria "${numeCat}"?`)) {
+        await _supabaseGrid.from('categorii').delete().eq('nume', numeCat);
+        await incarcaCategoriiAdmin();
+        showMsg("Categoria a fost ștearsă!");
+    }
+}
+
+        // --- GESTIONARE CONCURSURI ---
+        async function incarcaConcursuriAdmin() {
+            let concursuriSalvate = localStorage.getItem('rev_concursuri');
+            if(!concursuriSalvate) {
+                toateConcursurile = [{nume: "Olimpiadă"}, {nume: "Concurs Național"}, {nume: "Proiect Școlar"}];
+                localStorage.setItem('rev_concursuri', JSON.stringify(toateConcursurile));
+            } else {
+                toateConcursurile = JSON.parse(concursuriSalvate);
+            }
+
+            const select = document.getElementById('proj-concurs');
+            select.innerHTML = '<option value="">-- Selectează un Concurs --</option>';
+            const containerLista = document.getElementById('admin-contests-list');
+            containerLista.innerHTML = "";
+
+            toateConcursurile.forEach(conc => {
+                const opt = document.createElement('option'); opt.value = conc.nume; opt.textContent = conc.nume;
+                select.appendChild(opt);
+                containerLista.innerHTML += `<div class="admin-cat-tag"><span>${conc.nume}</span><div>
+                    <button type="button" class="cat-action-btn" onclick="editeazaConcurs('${conc.nume}')">✏️</button>
+                    <button type="button" class="cat-action-btn" onclick="stergeConcurs('${conc.nume}')">❌</button>
+                </div></div>`;
+            });
+        }
+
+        document.getElementById('btn-add-conc-direct').addEventListener('click', () => {
+            const input = document.getElementById('new-conc-input'); if (!input.value.trim()) return;
+            toateConcursurile.push({ nume: input.value.trim() });
+            localStorage.setItem('rev_concursuri', JSON.stringify(toateConcursurile));
+            input.value = ""; incarcaConcursuriAdmin(); showMsg("Concurs adăugat!");
+        });
+
+        async function editeazaConcurs(numeVechi) {
+            const nou = prompt("Schimbă numele concursului în:", numeVechi);
+            if (!nou || nou.trim() === "" || nou.trim() === numeVechi) return;
+            toateConcursurile = toateConcursurile.map(c => c.nume === numeVechi ? { nume: nou.trim() } : c);
+            localStorage.setItem('rev_concursuri', JSON.stringify(toateConcursurile));
+            await _supabaseGrid.from('proiecte').update({ concurs: nou.trim() }).eq('concurs', numeVechi);
+            await incarcaConcursuriAdmin(); await incarcaContinutGestionare();
+        }
+
+        // --- BLOCARE ȘTERGERE CONCURS ---
+async function stergeConcurs(numeConc) {
+    // Verificăm dacă există proiecte asociate acestui concurs
+    const { data: proiecteAsociate, error } = await _supabaseGrid
+        .from('proiecte')
+        .select('id')
+        .eq('concurs', numeConc);
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    if (proiecteAsociate && proiecteAsociate.length > 0) {
+        alert(`❌ Nu poți șterge concursul "${numeConc}" deoarece este folosit în ${proiecteAsociate.length} proiect(e) ale elevilor!`);
+        return;
+    }
+
+    if (confirm(`Sigur dorești să ștergi concursul "${numeConc}"?`)) {
+        toateConcursurile = toateConcursurile.filter(c => c.nume !== numeConc);
+        localStorage.setItem('rev_concursuri', JSON.stringify(toateConcursurile));
+        await incarcaConcursuriAdmin();
+        showMsg("Concursul a fost șters!");
+    }
+}
+
+        // --- GESTIONARE DINAMICĂ: ANI BAC ---
+        function incarcaAniBACAdmin() {
+            let aniSalvati = localStorage.getItem('bac_ani');
+            if(!aniSalvati) {
+                totiAnii = [{an: 2026}, {an: 2025}, {an: 2024}];
+                localStorage.setItem('bac_ani', JSON.stringify(totiAnii));
+            } else { totiAnii = JSON.parse(aniSalvati); }
+
+            const select = document.getElementById('sub-an');
+            select.innerHTML = '<option value="">-- Alege Anul --</option>';
+            const container = document.getElementById('admin-ani-list');
+            container.innerHTML = "";
+
+            totiAnii.forEach(item => {
+                const opt = document.createElement('option'); opt.value = item.an; opt.textContent = item.an;
+                select.appendChild(opt);
+                container.innerHTML += `<div class="admin-cat-tag"><span>${item.an}</span><div>
+                    <button type="button" class="cat-action-btn" onclick="editeazaAnBAC(${item.an})">✏️</button>
+                    <button type="button" class="cat-action-btn" onclick="stergeAnBAC(${item.an})">❌</button>
+                </div></div>`;
+            });
+        }
+
+        document.getElementById('btn-add-an-direct').addEventListener('click', () => {
+            const input = document.getElementById('new-an-input'); if (!input.value.trim() || isNaN(input.value)) return;
+            totiAnii.push({ an: parseInt(input.value.trim()) });
+            totiAnii.sort((a,b) => b.an - a.an);
+            localStorage.setItem('bac_ani', JSON.stringify(totiAnii));
+            input.value = ""; incarcaAniBACAdmin(); showMsg("An adăugat!");
+        });
+
+        async function editeazaAnBAC(anVechi) {
+            const nou = prompt("Schimbă anul în:", anVechi);
+            if (!nou || isNaN(nou) || parseInt(nou) === anVechi) return;
+            totiAnii = totiAnii.map(a => a.an === anVechi ? { an: parseInt(nou) } : a);
+            localStorage.setItem('bac_ani', JSON.stringify(totiAnii));
+            await _supabaseGrid.from('subiecte_bac').update({ an: parseInt(nou) }).eq('an', anVechi);
+            incarcaAniBACAdmin(); await incarcaContinutGestionare();
+        }
+
+        // --- BLOCARE ȘTERGERE AN BAC ---
+async function stergeAnBAC(an) {
+    // Verificăm dacă există subiecte adăugate în acest an
+    const { data: subiecteAsociate, error } = await _supabaseGrid
+        .from('subiecte_bac')
+        .select('id')
+        .eq('an', an);
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    if (subiecteAsociate && subiecteAsociate.length > 0) {
+        alert(`❌ Nu poți șterge anul ${an} deoarece există ${subiecteAsociate.length} subiect(e) BAC publicate pentru acest an!`);
+        return;
+    }
+
+    if (confirm(`Sigur dorești să ștergi anul ${an} din opțiuni?`)) {
+        totiAnii = totiAnii.filter(a => a.an !== an);
+        localStorage.setItem('bac_ani', JSON.stringify(totiAnii));
+        incarcaAniBACAdmin();
+        showMsg("Anul a fost șters!");
+    }
+}
+        // --- GESTIONARE DINAMICĂ: SESIUNI BAC ---
+        function incarcaSesiuniBACAdmin() {
+            let sesiuniSalvate = localStorage.getItem('bac_sesiuni');
+            if(!sesiuniSalvate) {
+                toateSesiunile = [{nume: "Sesiunea Iunie"}, {nume: "Model Oficial"}];
+                localStorage.setItem('bac_sesiuni', JSON.stringify(toateSesiunile));
+            } else { toateSesiunile = JSON.parse(sesiuniSalvate); }
+
+            const select = document.getElementById('sub-sesiune');
+            select.innerHTML = '<option value="">-- Alege Sesiunea --</option>';
+            const container = document.getElementById('admin-sesiuni-list');
+            container.innerHTML = "";
+
+            toateSesiunile.forEach(s => {
+                const opt = document.createElement('option'); opt.value = s.nume; opt.textContent = s.nume;
+                select.appendChild(opt);
+                container.innerHTML += `<div class="admin-cat-tag"><span>${s.nume}</span><div>
+                    <button type="button" class="cat-action-btn" onclick="editeazaSesiuneBAC('${s.nume}')">✏️</button>
+                    <button type="button" class="cat-action-btn" onclick="stergeSesiuneBAC('${s.nume}')">❌</button>
+                </div></div>`;
+            });
+        }
+
+        document.getElementById('btn-add-sesiune-direct').addEventListener('click', () => {
+            const input = document.getElementById('new-sesiune-input'); if (!input.value.trim()) return;
+            toateSesiunile.push({ nume: input.value.trim() });
+            localStorage.setItem('bac_sesiuni', JSON.stringify(toateSesiunile));
+            input.value = ""; incarcaSesiuniBACAdmin(); showMsg("Sesiune adăugată!");
+        });
+
+        async function editeazaSesiuneBAC(numeVechi) {
+            const nou = prompt("Schimbă numele sesiunii în:", numeVechi);
+            if (!nou || nou.trim() === "" || nou.trim() === numeVechi) return;
+            toateSesiunile = toateSesiunile.map(s => s.nume === numeVechi ? { nume: nou.trim() } : s);
+            localStorage.setItem('bac_sesiuni', JSON.stringify(toateSesiunile));
+            await _supabaseGrid.from('subiecte_bac').update({ sesiune: nou.trim() }).eq('sesiune', numeVechi);
+            incacaSesiuniBACAdmin(); await incarcaContinutGestionare();
+        }
+
+        async function stergeSesiuneBAC(numeSesiune) {
+    // Verificăm dacă există subiecte adăugate în această sesiune
+    const { data: subiecteAsociate, error } = await _supabaseGrid
+        .from('subiecte_bac')
+        .select('id')
+        .eq('sesiune', numeSesiune);
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    if (subiecteAsociate && subiecteAsociate.length > 0) {
+        alert(`❌ Nu poți șterge sesiunea "${numeSesiune}" deoarece este folosită în ${subiecteAsociate.length} subiect(e) BAC active!`);
+        return;
+    }
+
+    if (confirm(`Sigur dorești să ștergi sesiunea "${numeSesiune}"?`)) {
+        toateSesiunile = toateSesiunile.filter(s => s.nume !== numeSesiune);
+        localStorage.setItem('bac_sesiuni', JSON.stringify(toateSesiunile));
+        incarcaSesiuniBACAdmin();
+        showMsg("Sesiunea a fost ștearsă!");
+    }
+}
+
+        // --- SALVARE / EDITARE ARTICOL ---
+        document.getElementById('form-articol').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const idExistent = document.getElementById('articol-id-hidden').value;
+            const fileInput = document.getElementById('art-imagine');
+            let urlImagine = "";
+
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const filePath = `articole/${Math.random()}.${file.name.split('.').pop()}`;
+                await _supabaseGrid.storage.from('imagini-articole').upload(filePath, file);
+                urlImagine = _supabaseGrid.storage.from('imagini-articole').getPublicUrl(filePath).data.publicUrl;
+            }
+
+            const dateArticol = {
+                titlu: document.getElementById('art-titlu').value.trim(),
+                categorie: document.getElementById('art-categorie').value,
+                autor: document.getElementById('art-autor').value.trim(),
+                continut: document.getElementById('art-continut').value.trim(),
+                recomandat: document.getElementById('art-recomandat').checked
+            };
+            if (urlImagine) dateArticol.imagine = urlImagine;
+
+            if (idExistent) {
+                await _supabaseGrid.from('articole').update(dateArticol).eq('id', idExistent);
+                showMsg("Articol actualizat!"); reseteazaFormularArticol();
+            } else {
+                if (!urlImagine) { alert("Selectați o imagine!"); return; }
+                dateArticol.imagine = urlImagine;
+                await _supabaseGrid.from('articole').insert([dateArticol]);
+                showMsg("Articol publicat!"); reseteazaFormularArticol();
+            }
+            await incarcaContinutGestionare();
+        });
+
+        function pregatesteEditareArticol(idArticol) {
+            const art = cacheArticole.find(a => a.id == idArticol); if(!art) return;
+            document.getElementById('articol-id-hidden').value = art.id;
+            document.getElementById('art-titlu').value = art.titlu || "";
+            document.getElementById('art-categorie').value = art.categorie || "";
+            document.getElementById('art-autor').value = art.autor || "";
+            document.getElementById('art-continut').value = art.continut || "";
+            document.getElementById('art-recomandat').checked = art.recomandat === true;
+            document.getElementById('form-title-articol').innerText = "Modifică Articolul";
+            document.getElementById('btn-submit-articol').innerText = "Salvează Modificările";
+            document.getElementById('btn-anuleaza-edit-art').style.display = "inline-block";
+            document.getElementById('poza-veche-hint').style.display = "inline";
+            switchTab('articol-sec');
+        }
+
+        function reseteazaFormularArticol() {
+            document.getElementById('form-articol').reset(); document.getElementById('articol-id-hidden').value = "";
+            document.getElementById('form-title-articol').innerText = "Adaugă un Articol Nou";
+            document.getElementById('btn-submit-articol').innerText = "Publică Articolul";
+            document.getElementById('btn-anuleaza-edit-art').style.display = "none"; document.getElementById('poza-veche-hint').style.display = "none";
+        }
+
+        // --- SALVARE / EDITARE PROIECT ---
+        document.getElementById('form-proiect').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const idExistent = document.getElementById('proiect-id-hidden').value;
+            const imgInput = document.getElementById('proj-imagine');
+            const fileInput = document.getElementById('proj-fisier');
+
+            const eleviArray = [];
+            document.querySelectorAll('.proj-elev-nume').forEach(inp => { if(inp.value.trim()) eleviArray.push(inp.value.trim()); });
+            const stringElevi = eleviArray.join(', ');
+
+            let urlImagine = ""; let urlFisier = ""; let extensieFisier = "";
+
+            if (imgInput.files.length > 0) {
+                const imgFile = imgInput.files[0];
+                const imgPath = `proiecte/coperte/${Math.random()}.${imgFile.name.split('.').pop()}`;
+                await _supabaseGrid.storage.from('imagini-articole').upload(imgPath, imgFile);
+                urlImagine = _supabaseGrid.storage.from('imagini-articole').getPublicUrl(imgPath).data.publicUrl;
+            }
+
+            if (fileInput.files.length > 0) {
+                const fFile = fileInput.files[0];
+                extensieFisier = fFile.name.split('.').pop().toUpperCase();
+                const docPath = `proiecte/documente/${Math.random()}.${fFile.name.split('.').pop()}`;
+                await _supabaseGrid.storage.from('imagini-articole').upload(docPath, fFile);
+                urlFisier = _supabaseGrid.storage.from('imagini-articole').getPublicUrl(docPath).data.publicUrl;
+            }
+
+            const dateProiect = {
+                nume_proiect: document.getElementById('proj-nume').value.trim(),
+                elev: stringElevi,
+                clasa: document.getElementById('proj-clasa').value,
+                concurs: document.getElementById('proj-concurs').value,
+                premiu: document.getElementById('proj-premiu').value.trim(),
+                proiect_deosebit: document.getElementById('proj-deosebit').checked
+            };
+
+            if(urlImagine) dateProiect.imagine_url = urlImagine;
+            if(urlFisier) { dateProiect.fisier_url = urlFisier; dateProiect.tip_fisier = extensieFisier; }
+
+            if(idExistent) {
+                await _supabaseGrid.from('proiecte').update(dateProiect).eq('id', idExistent);
+                showMsg("Proiect modificat!"); reseteazaFormularProiect();
+            } else {
+                if(!urlImagine || !urlFisier) { alert("Încărcați ambele fișiere!"); return; }
+                dateProiect.imagine_url = urlImagine; dateProiect.fisier_url = urlFisier; dateProiect.tip_fisier = extensieFisier;
+                await _supabaseGrid.from('proiecte').insert([dateProiect]);
+                showMsg("Proiect publicat!"); reseteazaFormularProiect();
+            }
+            await incarcaContinutGestionare();
+        });
+
+        function pregatesteEditareProiect(idProiect) {
+            const proj = cacheProiecte.find(p => p.id == idProiect); if(!proj) return;
+            document.getElementById('proiect-id-hidden').value = proj.id;
+            document.getElementById('proj-nume').value = proj.nume_proiect || "";
+            document.getElementById('proj-clasa').value = proj.clasa || "";
+            document.getElementById('proj-concurs').value = proj.concurs || "";
+            document.getElementById('proj-premiu').value = proj.premiu || "";
+            document.getElementById('proj-deosebit').checked = proj.proiect_deosebit === true;
+
+            const container = document.getElementById('elevi-inputs-container'); container.innerHTML = "";
+            const listaElevi = proj.elev ? proj.elev.split(', ') : [""];
+            listaElevi.forEach((el, index) => {
+                if(index === 0) container.innerHTML = `<div class="elev-input-row"><input type="text" class="proj-elev-nume" placeholder="Nume și Prenume Elev" value="${el}" required></div>`;
+                else adaugaCampElev(el);
+            });
+
+            document.getElementById('form-title-proiect').innerText = "Modifică Proiectul Existent";
+            document.getElementById('btn-submit-proiect').innerText = "Salvează Modificările";
+            document.getElementById('btn-anuleaza-edit-proj').style.display = "inline-block";
+            document.querySelectorAll('.edit-hint-proj').forEach(el => el.style.display = "inline");
+            switchTab('proiect-sec');
+        }
+
+        function reseteazaFormularProiect() {
+            document.getElementById('form-proiect').reset(); document.getElementById('proiect-id-hidden').value = "";
+            document.getElementById('elevi-inputs-container').innerHTML = `<div class="elev-input-row"><input type="text" class="proj-elev-nume" placeholder="Nume și Prenume Elev" required></div>`;
+            document.getElementById('form-title-proiect').innerText = "Adaugă un Proiect Nou (Elev)";
+            document.getElementById('btn-submit-proiect').innerText = "Publică Proiectul";
+            document.getElementById('btn-anuleaza-edit-proj').style.display = "none";
+            document.querySelectorAll('.edit-hint-proj').forEach(el => el.style.display = "none");
+        }
+
+        // --- SUBMIT: ADĂUGARE / EDITARE SUBIECT BAC ---
+        document.getElementById('form-subiect').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const idExistent = document.getElementById('subiect-id-hidden').value;
+            const fileInput = document.getElementById('sub-fisier');
+            let urlFisier = "";
+
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const filePath = `subiecte_bac/${Math.random()}.${file.name.split('.').pop()}`;
+                // Urcăm fișierul direct în storage bucket-ul existent 'imagini-articole'
+                const { error: uploadError } = await _supabaseGrid.storage.from('imagini-articole').upload(filePath, file);
+                if (uploadError) { alert("Eroare upload fișier: " + uploadError.message); return; }
+                urlFisier = _supabaseGrid.storage.from('imagini-articole').getPublicUrl(filePath).data.publicUrl;
+            }
+
+            const dateSubiect = {
+                an: parseInt(document.getElementById('sub-an').value),
+                sesiune: document.getElementById('sub-sesiune').value,
+                profil: document.getElementById('sub-titlu').value.trim() // Salvat în coloana 'profil' conform cerințelor de structură
+            };
+            if(urlFisier) dateSubiect.fisier_url = urlFisier;
+
+            if(idExistent) {
+                const { error } = await _supabaseGrid.from('subiecte_bac').update(dateSubiect).eq('id', idExistent);
+                if(error) showMsg(error.message, true);
+                else { showMsg("Subiect BAC actualizat cu succes!"); reseteazaFormularSubiect(); }
+            } else {
+                if(!urlFisier) { alert("Vă rugăm să selectați un fișier PDF/Document pentru subiect!"); return; }
+                dateSubiect.fisier_url = urlFisier;
+                const { error } = await _supabaseGrid.from('subiecte_bac').insert([dateSubiect]);
+                if(error) showMsg(error.message, true);
+                else { showMsg("Subiectul BAC a fost publicat cu succes!"); reseteazaFormularSubiect(); }
+            }
+            await incarcaContinutGestionare();
+        });
+
+        function pregatesteEditareSubiect(idSubiect) {
+            const sub = cacheSubiecte.find(s => s.id == idSubiect); if(!sub) return;
+            document.getElementById('subiect-id-hidden').value = sub.id;
+            document.getElementById('sub-titlu').value = sub.profil || "";
+            document.getElementById('sub-an').value = sub.an || "";
+            document.getElementById('sub-sesiune').value = sub.sesiune || "";
+
+            document.getElementById('form-title-subiect').innerText = "Modifică Subiectul BAC";
+            document.getElementById('btn-submit-subiect').innerText = "Salvează Modificările";
+            document.getElementById('btn-anuleaza-edit-sub').style.display = "inline-block";
+            document.querySelectorAll('.edit-hint-sub').forEach(el => el.style.display = "inline");
+            switchTab('subiect-sec');
+        }
+
+        function reseteazaFormularSubiect() {
+            document.getElementById('form-subiect').reset();
+            document.getElementById('subiect-id-hidden').value = "";
+            document.getElementById('form-title-subiect').innerText = "Adaugă un Subiect BAC Nou";
+            document.getElementById('btn-submit-subiect').innerText = "Salvează Subiect BAC";
+            document.getElementById('btn-anuleaza-edit-sub').style.display = "none";
+            document.querySelectorAll('.edit-hint-sub').forEach(el => el.style.display = "none");
+        }
+
+        // --- COMPILARE TOATE LISTELE DE CONTROL ---
+        async function incarcaContinutGestionare() {
+            const containerArticole = document.getElementById('liste-articole');
+            const containerProiecte = document.getElementById('liste-proiecte');
+            const containerSubiecte = document.getElementById('liste-subiecte');
+
+            // 1. Încarcă Subiecte BAC
+            const { data: subs } = await _supabaseGrid.from('subiecte_bac').select('*').order('created_at', { ascending: false });
+            cacheSubiecte = subs || [];
+            containerSubiecte.innerHTML = cacheSubiecte.length === 0 ? "<p>Nu există subiecte BAC adăugate.</p>" : "";
+            cacheSubiecte.forEach(sub => {
+                const div = document.createElement('div'); div.className = 'item-card';
+                div.innerHTML = `<div class="item-info"><h4>${sub.profil || 'Fără Titlu'}</h4><p>An: ${sub.an} | Sesiune: ${sub.sesiune}</p></div>
+                    <div class="item-actions">
+                        <button class="btn-modifica" onclick="pregatesteEditareSubiect(${sub.id})">Modifică</button>
+                        <button class="btn-sterge" onclick="stergeSubiectBAC(${sub.id})">Șterge</button>
+                    </div>`;
+                containerSubiecte.appendChild(div);
+            });
+
+            // 2. Încarcă Articole
+            const { data: arts } = await _supabaseGrid.from('articole').select('*').order('created_at', { ascending: false });
+            cacheArticole = arts || [];
+            containerArticole.innerHTML = cacheArticole.length === 0 ? "<p>Fără articole.</p>" : "";
+            cacheArticole.forEach(art => {
+                const div = document.createElement('div'); div.className = 'item-card';
+                div.innerHTML = `<div class="item-info"><h4>${art.titlu}</h4><p>Epocă: ${art.categorie || 'Fără'}</p></div>
+                    <div class="item-actions">
+                        <button class="btn-modifica" onclick="pregatesteEditareArticol(${art.id})">Modifică</button>
+                        <button class="btn-sterge" onclick="stergeArticol(${art.id})">Șterge</button>
+                    </div>`;
+                containerArticole.appendChild(div);
+            });
+
+            // 3. Încarcă Proiecte
+            const { data: projs } = await _supabaseGrid.from('proiecte').select('*').order('created_at', { ascending: false });
+            cacheProiecte = projs || [];
+            containerProiecte.innerHTML = cacheProiecte.length === 0 ? "<p>Nu există proiecte urcate.</p>" : "";
+            cacheProiecte.forEach(proj => {
+                const div = document.createElement('div'); div.className = 'item-card';
+                div.innerHTML = `<div class="item-info"><h4>${proj.nume_proiect}</h4><p>Elevi: ${proj.elev} | ${proj.premiu ? '🏆 ' + proj.premiu : 'Fără premiu'}</p></div>
+                    <div class="item-actions">
+                        <button class="btn-modifica" onclick="pregatesteEditareProiect(${proj.id})">Modifică</button>
+                        <button class="btn-sterge" onclick="stergeProiect(${proj.id})">Șterge</button>
+                    </div>`;
+                containerProiecte.appendChild(div);
+            });
+        }
+
+        async function stergeArticol(id) { if(confirm("Ștergi definitiv articolul?")) { await _supabaseGrid.from('articole').delete().eq('id', id); await incarcaContinutGestionare(); } }
+        async function stergeProiect(id) { if(confirm("Ștergi definitiv proiectul?")) { await _supabaseGrid.from('proiecte').delete().eq('id', id); await incarcaContinutGestionare(); } }
+        async function stergeSubiectBAC(id) { if(confirm("Ștergi definitiv acest Subiect BAC?")) { await _supabaseGrid.from('subiecte_bac').delete().eq('id', id); await incarcaContinutGestionare(); } }
+    </script>
+</body>
+</html>

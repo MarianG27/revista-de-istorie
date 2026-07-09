@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revista de Istorie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* ANIMAȚIA FLUIDĂ SPRE STÂNGA (<--) */
+        .hero-slider {
+            position: relative;
+            overflow: hidden;
+        }
+        .slider-slides-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .slider-item.js-home-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            z-index: 1;
+            display: flex !important;
+            transform: translateX(100%); 
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
+            pointer-events: none;
+        }
+        
+        .slider-item.js-home-slide.active {
+            opacity: 1;
+            transform: translateX(0) !important;
+            z-index: 3;
+            pointer-events: auto;
+        }
+
+        .slider-item.js-home-slide.exit-to-left {
+            opacity: 0;
+            transform: translateX(-100%) !important;
+            z-index: 2;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 1.2s ease;
+        }
+
+        /* Stiluri insignă și puncte */
+        .badge-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .badge-slider {
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border-radius: 3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 30px;
+            z-index: 10;
+            display: flex;
+            gap: 10px;
+        }
+        .slider-dots .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .slider-dots .dot.active {
+            background-color: #c29b53 !important;
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="citat">
+                „Cine nu cunoaște trecutul, este condamnat să-l repete.” – <span class="autor">George Santayana</span>
+            </div>
+            <div class="top-bar-right">
+                <div class="search-box">
+    <input type="text" id="globalSearchInput" placeholder="Caută în site..." onkeypress="if(event.key === 'Enter') executaCautareGala()">
+    <button onclick="executaCautareGala()"><i class="fa-solid fa-magnifying-glass"></i></button>
+</div>
+
+<script>
+function executaCautareGala() {
+    const termen = document.getElementById('globalSearchInput').value.trim();
+    if (termen.length > 1) {
+        // Redirecționează către pagina de rezultate cu termenul ca parametru în URL
+        window.location.href = 'rezultate-cautare.html?q=' + encodeURIComponent(termen);
+    }
+}
+</script>
+                
+            </div>
+        </div>
+    </div>
+
+    <header class="main-header">
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fa-solid fa-greece-building logo-icon"></i>
+                <div class="logo-text">
+                    <h1>REVISTA</h1>
+                    <h2>DE ISTORIE</h2>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html" class="active">ACASĂ</a></li>
+                    <li><a href="articole.html">ARTICOLE</a></li>
+                    <li><a href="proiecte.html">PROIECTELE ELEVILOR</a></li>
+                    <li><a href="bac.html">SUBIECTE BAC</a></li>
+                    <li><a href="despre.html">DESPRE REVISTĂ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container main-content-wrapper">
+        
+        <section class="hero-slider" id="main-hero-slider">
+            <div class="slider-container-inner" id="slider-inner-target">
+                <p style="text-align: center; padding: 40px; color: #aaa;">Se încarcă articolele...</p>
+            </div>
+        </section>
+
+        <aside class="sidebar-projects">
+            <div class="sidebar-header">
+                <h3><i class="fa-solid fa-scroll icon-sidebar"></i> PROIECTELE ELEVILOR</h3>
+            </div>
+            
+            <div class="projects-list" id="proiecte-recents-target">
+                <p style="text-align: center; padding: 20px; color: #aaa; font-size: 0.85rem;">Se încarcă proiectele...</p>
+            </div>
+
+            <a href="proiecte.html" class="btn-toate-proiectele">VEZI TOATE PROIECTELE</a>
+        </aside>
+
+    </main>
+
+    <section class="container multimedia-wrapper">
+        <div class="latest-articles-section">
+            <div class="section-title-container">
+                <h3 class="section-title"><i class="fa-solid fa-compass-drafting icon-gold"></i> ULTIMELE ARTICOLE</h3>
+                <a href="articole.html" class="btn-vezi-toate">VEZI TOATE <i class="fa-solid fa-arrow-right-long"></i></a>
+            </div>
+            <div class="articles-grid"></div>
+        </div>
+<div class="latest-articles-section" style="margin-top: 0px; width: 100%;">
+    <div class="section-title-container">
+        <h3 class="section-title">
+            <i class="fa-solid fa-graduation-cap icon-gold"></i> SUBIECTE BAC
+        </h3>
+        <a href="bac.html" class="btn-vezi-toate">
+            VEZI TOATE <i class="fa-solid fa-arrow-right-long"></i>
+        </a>
+    </div>
+    
+    <div id="subiecte-bac-target" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%;">
+        <p style="grid-column: span 3; text-align: center; padding: 20px; color: #aaa; font-size: 0.85rem;">Se încarcă subiectele...</p>
+    </div>
+</div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-citat">
+                <p class="citat-text">„Istoria este învățătoarea vieții.”</p>
+                <p class="citat-autor">— Cicero</p>
+            </div>
+            <div class="footer-newsletter" style="max-width: 280px; opacity: 0.6;">
+    <h4 style="font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 8px; color: #8C8275;">ABONEAZĂ-TE LA NOUTĂȚI (INDISPONIBIL)</h4>
+    <form class="newsletter-form" style="display: flex; gap: 5px; pointer-events: none;">
+        <input type="email" 
+               placeholder="Indisponibil temporar..." 
+               disabled 
+               style="font-size: 0.75rem; padding: 6px 10px; background: #2d2722; border: 1px solid #443c35; color: #777; cursor: not-allowed; width: 100%;">
+        <button type="submit" 
+                disabled 
+                style="font-size: 0.7rem; padding: 6px 10px; background: #554e48; color: #888; border: none; cursor: not-allowed; white-space: nowrap;">
+            ABONEAZĂ-TE
+        </button>
+    </form>
+</div>
+            <div class="footer-right" style="display: flex; flex-direction: column; gap: 20px;">
+    <div class="footer-links-group">
+        <h4 style="font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 12px; color: #8C8275; text-transform: uppercase;">Linkuri Utile</h4>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+            <li><a href="index.html" style="color: #FAF6F0; text-decoration: none; font-size: 0.85rem; opacity: 0.8; transition: opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">Acasă</a></li>
+            <li><a href="proiecte.html" style="color: #FAF6F0; text-decoration: none; font-size: 0.85rem; opacity: 0.8; transition: opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">Proiecte Elevi</a></li>
+            <li><a href="bac.html" style="color: #FAF6F0; text-decoration: none; font-size: 0.85rem; opacity: 0.8; transition: opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">Subiecte BAC</a></li>
+        </ul>
+    </div>
+        </div>
+    </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+   const SUPABASE_URL = "https://vkulkgccczdvvjweduos.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrdWxrZ2NjY3pkdnZqd2VkdW9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTE1NTEsImV4cCI6MjA5ODkyNzU1MX0.FttuCZisUYebymZZgIZ75YSB12CrNXZh4naJzbVSn8E";
+
+const _supabaseHome = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let indexSliderCurent = 0;
+let articoleSlider = [];
+let sliderInterval;
+
+async function initializarePaginaHome() {
+    // ---- 1. ÎNCĂRCARE ARTICOLE (Codul tău existent) ----
+    const { data: toateArticolele, error } = await _supabaseHome
+        .from('articole')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (!error && toateArticolele && toateArticolele.length > 0) {
+        let recomandate = toateArticolele.filter(art => art.recomandat === true);
+        if (recomandate.length === 0) recomandate = [toateArticolele[0]];
+
+        let populare = [...toateArticolele]
+            .filter(art => art.vizualizari && art.vizualizari > 0)
+            .sort((a, b) => b.vizualizari - a.vizualizari);
+
+        let mapSlider = new Map();
+        recomandate.slice(0, 2).forEach(art => mapSlider.set(art.id, art));
+        populare.forEach(art => { if (mapSlider.size < 4) mapSlider.set(art.id, art); });
+        articoleSlider = Array.from(mapSlider.values());
+
+        const topPopulareIduri = toateArticolele
+            .filter(art => art.vizualizari && art.vizualizari > 0)
+            .sort((a, b) => b.vizualizari - a.vizualizari)
+            .slice(0, 3)
+            .map(a => a.id);
+
+        const areVizualizari = toateArticolele.some(art => art.vizualizari && art.vizualizari > 0);
+        const areRecomandatExplicit = toateArticolele.some(art => art.recomandat === true);
+
+        if (!areVizualizari && !areRecomandatExplicit) {
+            document.getElementById('main-hero-slider').style.display = "none";
+        } else {
+            document.getElementById('main-hero-slider').style.display = "block";
+            afiseazaSliderConfigurat(topPopulareIduri, areRecomandatExplicit);
+        }
+
+        const idUriSlider = articoleSlider.map(art => art.id);
+        let deAfisatJos = toateArticolele.filter(art => !idUriSlider.includes(art.id)).slice(0, 4);
+        if (deAfisatJos.length === 0) deAfisatJos = toateArticolele.slice(0, 4);
+
+        const containerGridJos = document.querySelector('.latest-articles-section .articles-grid');
+        if (containerGridJos) {
+            containerGridJos.innerHTML = "";
+            deAfisatJos.forEach(articol => {
+                const poza = articol.imagine || articol.imagine_url || 'https://images.unsplash.com/photo-1599733589046-10c005739ef9?auto=format&fit=crop&q=80&w=400';
+                const categorie = articol.categorie || 'EVUL MEDIU';
+                const dataCreare = articol.created_at ? new Date(articol.created_at).toLocaleDateString('ro-RO') : 'Recent';
+
+                containerGridJos.innerHTML += `
+                    <a href="articol.html?id=${articol.id}" class="article-card-link">
+                        <article class="article-card">
+                            <div class="article-img-wrapper">
+                                <img src="${poza}" alt="${articol.titlu}">
+                                <span class="epoch-badge">${categorie.toUpperCase()}</span>
+                            </div>
+                            <div class="article-card-content">
+                                <h4>${articol.titlu}</h4>
+                                <span class="article-date"><i class="fa-regular fa-calendar"></i> ${dataCreare}</span>
+                            </div>
+                        </article>
+                    </a>
+                `;
+            });
+        }
+    }
+
+    // ---- 2. ÎNCĂRCARE DINAMICĂ 3 PROIECTE RECENTE (Codul tău existent) ----
+    const { data: proiecteRecente, errorProj } = await _supabaseHome
+        .from('proiecte')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(3); 
+
+    const containerProiecte = document.getElementById('proiecte-recents-target');
+    if (containerProiecte) {
+        if (errorProj || !proiecteRecente || proiecteRecente.length === 0) {
+            containerProiecte.innerHTML = "<p style='color:#aaa; text-align:center; padding:10px; font-size:0.85rem;'>Niciun proiect momentan.</p>";
+        } else {
+            containerProiecte.innerHTML = "";
+            proiecteRecente.forEach(proj => {
+                const poza = proj.imagine_url || 'https://images.unsplash.com/photo-1547483238-f400e65ccd56?auto=format&fit=crop&q=80&w=200';
+                let clasaFormatata = proj.clasa;
+                if (proj.clasa == 9) clasaFormatata = "IX";
+                else if (proj.clasa == 10) clasaFormatata = "X";
+                else if (proj.clasa == 11) clasaFormatata = "XI";
+                else if (proj.clasa == 12) clasaFormatata = "XII";
+                else if (proj.clasa == 0 || proj.clasa === "0") clasaFormatata = "Pregătitoare";
+
+                const clasaText = clasaFormatata === "Pregătitoare" ? clasaFormatata : `clasa a ${clasaFormatata}-a`;
+                const textPremiu = proj.premiu ? `<p class="contest-info" style="color:#c29b53; font-weight:bold; margin-top:2px;"><i class="fa-solid fa-trophy"></i> ${proj.premiu}</p>` : '';
+
+                containerProiecte.innerHTML += `
+                    <div class="project-card">
+                        <img src="${poza}" alt="${proj.nume_proiect}">
+                        <div class="project-info">
+                            <h4>${proj.nume_proiect}</h4>
+                            <p class="author-info">${proj.elev || 'Elev'}, ${clasaText}</p>
+                            <p class="contest-info">${proj.concurs || 'Concurs / Eveniment'}</p>
+                            ${textPremiu}
+                            <a href="proiect.html?id=${proj.id}" class="btn-vezi">VEZI PROIECT <i class="fa-solid fa-arrow-right-long"></i></a>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+    }
+
+    // ---- 3. ÎNCĂRCARE DINAMICĂ RECENTE 3 SUBIECTE BAC (CU EFECT HOVER) ----
+    const { data: subiecteRecente, errorBac } = await _supabaseHome
+        .from('subiecte_bac')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(3);
+
+    const containerSubiecte = document.getElementById('subiecte-bac-target');
+    if (containerSubiecte) {
+        if (errorBac || !subiecteRecente || subiecteRecente.length === 0) {
+            containerSubiecte.innerHTML = "<p style='grid-column: span 3; color:#aaa; text-align:center; padding:20px; font-size:0.85rem;'>Momentan nu au fost publicate subiecte de BAC.</p>";
+            return;
+        }
+
+        containerSubiecte.innerHTML = "";
+        subiecteRecente.forEach(bac => {
+            const pozaSubiect = 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&q=80&w=400';
+            const profilText = bac.profil ? bac.profil : 'Toate profilurile';
+
+            // Am adăugat o clasă dedicată "bac-card-animate" pentru a-i aplica efectele în siguranță
+            containerSubiecte.innerHTML += `
+                <div class="bac-card-animate" 
+                     style="background: #ffffff; border: 1px solid #DCD5C9; border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 2px 5px rgba(0,0,0,0.04); cursor: pointer; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;" 
+                     onclick="window.open('vizualizare-subiect.html?url=' + encodeURIComponent('${bac.fisier_url}') + '&titlu=' + encodeURIComponent('BAC Istorie ${bac.an} - ${bac.sesiune}'), '_blank')"
+                     onmouseenter="this.style.transform='translateY(-8px)'; this.style.shadow='0 12px 20px rgba(28, 22, 17, 0.08)';"
+                     onmouseleave="this.style.transform='translateY(0)'; this.style.shadow='0 2px 5px rgba(0,0,0,0.04)';"
+                >
+                    <img src="${pozaSubiect}" style="width: 100%; height: 100px; object-fit: cover; display: block; border-bottom: 1px solid #EAE5DC;">
+                    <div style="padding: 12px; background: #ffffff;">
+                        <h4 style="font-family: 'Cinzel', serif; color: #1C1611; margin: 0 0 6px 0; font-size: 1rem; font-weight: 600; line-height: 1.2;">BAC Istorie ${bac.an}</h4>
+                        <p style="color: #554E48; margin: 0 0 4px 0; font-size: 0.8rem; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-calendar-days" style="color: #C29B53; width: 14px;"></i> ${bac.sesiune}
+                        </p>
+                        <p style="color: #77706a; margin: 0; font-size: 0.75rem; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 8px;">
+                        </p>
+                    </div>
+                </div>
+            `;
+        });
+    }
+}
+
+function afiseazaSliderConfigurat(topPopulareIduri, areRecomandatExplicit) {
+    const target = document.getElementById('slider-inner-target');
+    if (!target || articoleSlider.length === 0) return;
+
+    let sliderItemsHtml = "";
+    let dotsHtml = "";
+
+    articoleSlider.forEach((articol, index) => {
+        const poza = articol.imagine || articol.imagine_url || 'https://images.unsplash.com/photo-1599733589046-10c005739ef9?auto=format&fit=crop&q=80&w=1200';
+        const extras = articol.continut ? articol.continut.substring(0, 140) + '...' : '';
+        const activClasa = index === 0 ? "active" : "";
+
+        const estePopular = topPopulareIduri.includes(articol.id);
+        const esteRecomandat = articol.recomandat === true || (!areRecomandatExplicit && index === 0);
+
+        let insignaHtml = `<div class="badge-container">`;
+        if (estePopular && esteRecomandat) {
+            insignaHtml += `
+                <span class="badge-slider" style="background: #ffcc00; color: #000;"><i class="fa-solid fa-fire"></i> ARTICOL POPULAR</span>
+                <span class="badge-slider" style="background: #da251d; color: #fff;"><i class="fa-solid fa-star"></i> RECOMANDAT</span>
+            `;
+        } else if (estePopular) {
+            insignaHtml += `<span class="badge-slider" style="background: #ffcc00; color: #000;"><i class="fa-solid fa-fire"></i> ARTICOL POPULAR</span>`;
+        } else if (esteRecomandat) {
+            insignaHtml += `<span class="badge-slider" style="background: #da251d; color: #fff;"><i class="fa-solid fa-star"></i> RECOMANDAT</span>`;
+        }
+        insignaHtml += `</div>`;
+
+        // Stilul inline asigură așezarea corectă în trenuleț (lățime completă și flexibilitate)
+        sliderItemsHtml += `
+            <div class="slider-item" style="flex: 0 0 100%; width: 100%; height: 100%; background-image: linear-gradient(to right, rgba(28, 22, 17, 0.9) 30%, rgba(28, 22, 17, 0.2) 100%), url('${poza}'); background-size: cover; background-position: center; display: flex !important;">
+                <div class="slider-content">
+                    ${insignaHtml}
+                    <h2 class="slider-title">${articol.titlu}</h2>
+                    <p class="slider-excerpt">${extras}</p>
+                    <a href="articol.html?id=${articol.id}" class="btn-citeste" style="pointer-events: auto; position: relative; z-index: 20;">CITEȘTE ARTICOLUL</a>
+                </div>
+            </div>
+        `;
+
+        dotsHtml += `<span class="dot js-home-dot ${activClasa}" onclick="schimbaSlideManual(${index})"></span>`;
+    });
+
+    // Construim „trenulețul” (.slider-track) care conține vagoanele noastre puse cap la cap
+    target.innerHTML = `
+        <div class="slider-track" id="home-slider-track" style="display: flex; width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);">
+            ${sliderItemsHtml}
+        </div>
+        <div class="slider-dots">
+            ${dotsHtml}
+        </div>
+    `;
+
+    pornesteSliderAutomat();
+}
+
+function pornesteSliderAutomat() {
+    clearInterval(sliderInterval);
+    if (articoleSlider.length <= 1) return;
+    sliderInterval = setInterval(() => {
+        let urmatorulIndex = (indexSliderCurent + 1) % articoleSlider.length;
+        mutaBandaLaIndex(urmatorulIndex);
+    }, 5000);
+}
+
+function mutaBandaLaIndex(noulIndex) {
+    const track = document.getElementById('home-slider-track');
+    const dots = document.querySelectorAll('.js-home-dot');
+    if (!track || dots.length === 0) return;
+
+    // Actualizăm clasa activă pe puncte (dots)
+    dots[indexSliderCurent].classList.remove('active');
+    indexSliderCurent = noulIndex;
+    dots[indexSliderCurent].classList.add('active');
+
+    // Mutăm toată banda („trenulețul”) la stânga în funcție de index
+    // Ex: index 0 -> 0%, index 1 -> -100%, index 2 -> -200%
+    let deplasare = -(indexSliderCurent * 100);
+    track.style.transform = `translateX(${deplasare}%)`;
+}
+
+function schimbaSlideManual(index) {
+    if (index === indexSliderCurent) return;
+    mutaBandaLaIndex(index);
+    pornesteSliderAutomat();
+}
+
+window.addEventListener('DOMContentLoaded', initializarePaginaHome);
+</script>
+
+</body>
+</html>

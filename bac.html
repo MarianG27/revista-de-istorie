@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subiecte Bacalaureat - Revista de Istorie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #FAF6F0; /* Fundalul crem cald din revistă */
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            color: #1C1611;
+        }
+
+        /* Stilurile pentru filtrele din revistă */
+        .filter-select {
+            background: #ffffff;
+            border: 1px solid #DCD5C9;
+            color: #554E48;
+            padding: 10px 15px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* Bare de an cu linie subțire și font Cinzel elegant */
+        .year-separator {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 35px 0 20px 0;
+            width: 100%;
+        }
+        .year-separator span {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1C1611;
+            letter-spacing: 1px;
+        }
+        .year-separator::after {
+            content: "";
+            flex-grow: 1;
+            height: 1px;
+            background: #DCD5C9;
+        }
+
+        .subjects-grid {
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="citat">
+                „Cine nu cunoaște trecutul, este condamnat să-l repete.” – <span class="autor">George Santayana</span>
+            </div>
+            <div class="top-bar-right">
+                <div class="search-box">
+    <input type="text" id="globalSearchInput" placeholder="Caută în site..." onkeypress="if(event.key === 'Enter') executaCautareGala()">
+    <button onclick="executaCautareGala()"><i class="fa-solid fa-magnifying-glass"></i></button>
+</div>
+
+<script>
+function executaCautareGala() {
+    const termen = document.getElementById('globalSearchInput').value.trim();
+    if (termen.length > 1) {
+        // Redirecționează către pagina de rezultate cu termenul ca parametru în URL
+        window.location.href = 'rezultate-cautare.html?q=' + encodeURIComponent(termen);
+    }
+}
+</script>
+            </div>
+        </div>
+    </div>
+    
+    <header class="main-header">
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fa-solid fa-greece-building logo-icon"></i>
+                <div class="logo-text">
+                    <h1>REVISTA</h1>
+                    <h2>DE ISTORIE</h2>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">ACASĂ</a></li>
+                    <li><a href="articole.html">ARTICOLE</a></li>
+                    <li><a href="proiecte.html">PROIECTELE ELEVILOR</a></li>
+                    <li><a href="bac.html" class="active">SUBIECTE BAC</a></li>
+                    <li><a href="despre.html">DESPRE REVISTĂ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-banner" style="background-image: linear-gradient(rgba(28, 22, 17, 0.75), rgba(28, 22, 17, 0.75)), url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=1400'); padding: 60px 20px; text-align: center;">
+        <div class="container">
+            <h1 style="font-family: 'Cinzel', serif; font-size: 2.4rem; color: #FFFFFF; margin: 0 0 10px 0; font-weight: 700; letter-spacing: 2px;">
+                SUBIECTE BACALAUREAT ISTORIE
+            </h1>
+            
+            <div style="width: 50px; height: 1px; background: #C29B53; margin: 15px auto;"></div>
+            
+            <p style="font-family: 'Cinzel', serif; font-size: 0.95rem; color: #DCD5C9; margin: 0 0 15px 0; letter-spacing: 1px; font-weight: 600; line-height: 1.5;">
+                Modele oficiale de subiecte pentru Bacalaureat la Istorie.<br>
+                Exersează, învață și pregătește-te pentru succes!
+            </p>
+            
+            <div class="banner-divider" style="color: #C29B53;">♦</div>
+        </div>
+    </section>
+
+    <main style="max-width: 1200px; margin: 40px auto; padding: 0 20px; box-sizing: border-box; flex: 1; width: 100%;">
+        
+        <div style="background: #ffffff; border: 1px solid #DCD5C9; border-radius: 6px; padding: 20px; margin: 0 auto 40px auto; max-width: 900px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+            <div>
+                <label style="font-size: 0.7rem; font-weight: 700; color: #8C8275; text-transform: uppercase; display: block; margin-bottom: 5px; font-family: 'Inter', sans-serif;"><i class="fa-solid fa-calendar"></i> Anul</label>
+                <select class="filter-select" id="yearSelect" onchange="applyFilters()">
+                    </select>
+            </div>
+            <div>
+                <label style="font-size: 0.7rem; font-weight: 700; color: #8C8275; text-transform: uppercase; display: block; margin-bottom: 5px; font-family: 'Inter', sans-serif;"><i class="fa-solid fa-file-invoice"></i> Sesiune</label>
+                <select class="filter-select" id="sessionSelect" onchange="applyFilters()">
+                    </select>
+            </div>
+            <div>
+                <label style="font-size: 0.7rem; font-weight: 700; color: #8C8275; text-transform: uppercase; display: block; margin-bottom: 5px; font-family: 'Inter', sans-serif;"><i class="fa-solid fa-graduation-cap"></i> Profil</label>
+                <select class="filter-select">
+                    <option>Uman / Real / Tehnologic</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="subjects-container" style="width: 100%;">
+            <p style="text-align: center; color: #8C8275;" id="loading-text">Se încarcă subiectele...</p>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-citat">
+                <p class="citat-text">„Istoria este învățătoarea vieții.”</p>
+                <p class="citat-autor">— Cicero</p>
+            </div>
+            <div class="footer-newsletter" style="max-width: 280px; opacity: 0.6;">
+    <h4 style="font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 8px; color: #8C8275;">ABONEAZĂ-TE LA NOUTĂȚI (INDISPONIBIL)</h4>
+    <form class="newsletter-form" style="display: flex; gap: 5px; pointer-events: none;">
+        <input type="email" 
+               placeholder="Indisponibil temporar..." 
+               disabled 
+               style="font-size: 0.75rem; padding: 6px 10px; background: #2d2722; border: 1px solid #443c35; color: #777; cursor: not-allowed; width: 100%;">
+        <button type="submit" 
+                disabled 
+                style="font-size: 0.7rem; padding: 6px 10px; background: #554e48; color: #888; border: none; cursor: not-allowed; white-space: nowrap;">
+            ABONEAZĂ-TE
+        </button>
+    </form>
+</div>
+               <div class="footer-right" style="display: flex; flex-direction: column; gap: 20px;">
+    <div class="footer-links-group">
+        <h4 style="font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 12px; color: #8C8275; text-transform: uppercase;">Linkuri Utile</h4>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+            <li><a href="index.html" style="color: #FAF6F0; text-decoration: none; font-size: 0.85rem; opacity: 0.8; transition: opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">Acasă</a></li>
+            <li><a href="proiecte.html" style="color: #FAF6F0; text-decoration: none; font-size: 0.85rem; opacity: 0.8; transition: opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">Proiecte Elevi</a></li>
+            <li><a href="bac.html" style="color: #FAF6F0; text-decoration: none; font-size: 0.85rem; opacity: 0.8; transition: opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">Subiecte BAC</a></li>
+        </ul>
+    </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://vkulkgccczdvvjweduos.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrdWxrZ2NjY3pkdnZqd2VkdW9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTE1NTEsImV4cCI6MjA5ODkyNzU1MX0.FttuCZisUYebymZZgIZ75YSB12CrNXZh4naJzbVSn8E";
+        
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        let subiecteGlobale = [];
+
+        // Inițializare opțiuni selectoare din aceleași date folosite în Admin
+        function initializeazaSelectoare() {
+            // Dropdown Ani
+            const yearSelect = document.getElementById('yearSelect');
+            let aniSalvati = localStorage.getItem('bac_ani');
+            let totiAnii = aniSalvati ? JSON.parse(aniSalvati) : [{an: 2026}, {an: 2025}, {an: 2024}];
+            
+            yearSelect.innerHTML = '<option value="all">Toți anii</option>';
+            totiAnii.forEach(item => {
+                yearSelect.innerHTML += `<option value="${item.an}">${item.an}</option>`;
+            });
+
+            // Dropdown Sesiuni
+            const sessionSelect = document.getElementById('sessionSelect');
+            let sesiuniSalvate = localStorage.getItem('bac_sesiuni');
+            let toateSesiunile = sesiuniSalvate ? JSON.parse(sesiuniSalvate) : [{nume: "Sesiunea Iunie"}, {nume: "Model Oficial"}];
+            
+            sessionSelect.innerHTML = '<option value="all">Toate sesiunile</option>';
+            toateSesiunile.forEach(s => {
+                sessionSelect.innerHTML += `<option value="${s.nume}">${s.nume}</option>`;
+            });
+        }
+
+        // Preluarea datelor din baza de date Supabase
+        async function incarcaSubiecte() {
+            initializeazaSelectoare();
+            
+            const { data, error } = await _supabase
+                .from('subiecte_bac')
+                .select('*')
+                .order('an', { ascending: false });
+
+            if (error) {
+                console.error("Eroare la preluarea subiectelor:", error);
+                document.getElementById('loading-text').innerText = "Eroare la încărcarea datelor.";
+                return;
+            }
+
+            subiecteGlobale = data || [];
+            construiesteInterfata(subiecteGlobale);
+        }
+
+        // Mapare dinamică și grupare pe ani
+       // Mapare dinamică și grupare pe ani (CU EFECT HOVER DE RIDICARE)
+        function construiesteInterfata(subiecte) {
+            const container = document.getElementById('subjects-container');
+            container.innerHTML = "";
+
+            if (subiecte.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #8C8275; margin-top: 20px;">Nu a fost găsit niciun subiect conform filtrelor selectate.</p>';
+                return;
+            }
+
+            // Grupăm array-ul pe ani
+            const subiectePeAni = {};
+            subiecte.forEach(sub => {
+                if (!subiectePeAni[sub.an]) {
+                    subiectePeAni[sub.an] = [];
+                }
+                subiectePeAni[sub.an].push(sub);
+            });
+
+            // Sortăm anii descrescător ca să apară cei mai recenți sus
+            const aniSortati = Object.keys(subiectePeAni).sort((a, b) => b - a);
+
+            aniSortati.forEach(an => {
+                const yearGroup = document.createElement('div');
+                yearGroup.className = 'year-group';
+                
+                let groupHTML = `
+                    <div class="year-separator">
+                        <span>${an}</span>
+                    </div>
+                    <div class="subjects-grid">
+                `;
+
+                subiectePeAni[an].forEach(sub => {
+                    // Setăm pictograma în funcție de sesiune
+                    let icon = '<i class="fa-solid fa-calendar-days" style="color: #C29B53;"></i>';
+                    if (sub.sesiune.toLowerCase().includes('model')) {
+                        icon = '<i class="fa-solid fa-file-lines" style="color: #C29B53;"></i>';
+                    }
+
+                    // Am adăugat tranzițiile și mutarea pe axa Y (translateY) la hover
+                    groupHTML += `
+                        <div class="subject-card" 
+                             style="background: #ffffff; border: 1px solid #DCD5C9; border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 2px 5px rgba(0,0,0,0.03); cursor: pointer; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;" 
+                             onclick="window.open('vizualizare-subiect.html?url=' + encodeURIComponent('${sub.fisier_url}') + '&titlu=' + encodeURIComponent('${sub.profil || 'BAC Istorie'} ${sub.an} - ${sub.sesiune}'), '_blank')"
+                             onmouseenter="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 12px 20px rgba(28, 22, 17, 0.08)';"
+                             onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 5px rgba(0,0,0,0.03)';"
+                        >
+                            <div style="padding: 20px;">
+                                <h4 style="font-family: 'Cinzel', serif; color: #1C1611; margin: 0 0 8px 0; font-size: 1.1rem; font-weight: 600;">${sub.profil || 'BAC Istorie'}</h4>
+                                <p style="color: #554E48; margin: 0; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;">
+                                    ${icon} ${sub.sesiune}
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                groupHTML += `</div>`;
+                yearGroup.innerHTML = groupHTML;
+                container.appendChild(yearGroup);
+            });
+        }
+
+        // Logică de filtrare adaptivă aplicată direct pe cache-ul global local
+        function applyFilters() {
+            const selectedYear = document.getElementById('yearSelect').value;
+            const selectedSession = document.getElementById('sessionSelect').value;
+
+            const subiecteFiltrate = subiecteGlobale.filter(sub => {
+                const matchesYear = (selectedYear === 'all' || sub.an.toString() === selectedYear);
+                const matchesSession = (selectedSession === 'all' || sub.sesiune === selectedSession);
+                return matchesYear && matchesSession;
+            });
+
+            construiesteInterfata(subiecteFiltrate);
+        }
+
+        // Pornire la încărcarea paginii
+        window.addEventListener('DOMContentLoaded', incarcaSubiecte);
+    </script>
+</body>
+</html>

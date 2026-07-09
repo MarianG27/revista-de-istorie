@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citire Articol - Revista de Istorie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Imbunătățiri majore pentru lizibilitate și design elegant */
+        .single-article-container { 
+            margin: 60px auto; 
+            max-width: 750px; 
+            padding: 0 24px; 
+        }
+        .single-article-hero { 
+            width: 100%; 
+            max-height: 480px; 
+            object-fit: cover; 
+            border-radius: 8px; 
+            border: 1px solid var(--gold); 
+            margin: 25px 0 35px 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .single-article-title { 
+            font-family: 'Cinzel', serif; 
+            color: #1c1611; /* Uniformizat cu textul elegant închis la culoare sau tema ta */
+            font-size: 2.8rem; 
+            line-height: 1.2;
+            margin: 15px 0; 
+            font-weight: 700;
+        }
+        
+        /* Textul articolului - stilizat ca o carte veche premium */
+        .single-article-content { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 1.25rem; 
+            line-height: 1.9; 
+            color: #2c2520; 
+            text-align: justify; 
+            white-space: pre-line; /* Păstrează spațiile și rândurile goale dintre paragrafe */
+        }
+
+        /* Efect de Drop-Cap: Prima literă din articol va fi mare și elegantă */
+        .single-article-content::first-letter {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            float: left;
+            margin-right: 10px;
+            line-height: 1;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .article-meta {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: #666;
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid #e0dbd3;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .article-meta span i {
+            color: var(--gold);
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="citat">„Cine nu cunoaște trecutul, este condamnat să-l repete.” – <span class="autor">George Santayana</span></div>
+        </div>
+    </div>
+
+    <header class="main-header">
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fa-solid fa-greece-building logo-icon"></i>
+                <div class="logo-text"><h1>REVISTA</h1><h2>DE ISTORIE</h2></div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">ACASĂ</a></li>
+                    <li><a href="articole.html">ARTICOLE</a></li>
+                    </ul>
+            </nav>
+        </div>
+    </header> 
+
+    <main class="single-article-container">
+        <span class="feat-badge" id="art-categorie" style="background: var(--gold); color: #1c1611; padding: 4px 12px; font-weight: bold; font-size: 0.75rem; border-radius: 3px; letter-spacing: 1px;">ÎNCĂRCARE...</span>
+        <h1 class="single-article-title" id="art-titlu">Se încarcă articolul...</h1>
+        
+        <div class="article-meta">
+            <span><i class="fa-solid fa-user"></i> de <span id="art-autor">Administrator</span></span>
+            <span><i class="fa-solid fa-calendar-days"></i> <span id="art-data">-</span></span>
+        </div>
+
+        <img src="" alt="Imagine Articol" class="single-article-hero" id="art-imagine" style="display:none;">
+        
+        <div class="single-article-content" id="art-continut">
+            Conținutul se descarcă din baza de date...
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container footer-content" style="text-align: center; padding: 20px 0;">
+            <p>© 2026 Revista de Istorie. Toate drepturile rezervate.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://vkulkgccczdvvjweduos.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrdWxrZ2NjY3pkdnZqd2VkdW9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTE1NTEsImV4cCI6MjA5ODkyNzU1MX0.FttuCZisUYebymZZgIZ75YSB12CrNXZh4naJzbVSn8E";
+        
+        const _supabaseInstance = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function incarcaArticolComplet() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const articolId = urlParams.get('id');
+
+            if(!articolId) {
+                document.getElementById('art-titlu').innerText = "Articolul nu a fost găsit.";
+                return;
+            }
+
+            const { data: articol, error } = await _supabaseInstance
+                .from('articole') 
+                .select('*')
+                .eq('id', articolId)
+                .single();
+
+            if (error || !articol) {
+                document.getElementById('art-titlu').innerText = "Eroare la încărcarea articolului.";
+                console.error("Eroare Supabase:", error);
+                return;
+            }
+
+            // Populăm elementele din pagină cu datele reale
+            document.getElementById('art-titlu').innerText = articol.titlu;
+            document.getElementById('art-categorie').innerText = (articol.categorie || 'ISTORIE').toUpperCase();
+            document.getElementById('art-autor').innerText = articol.autor || 'Admin';
+            document.getElementById('art-continut').innerText = articol.continut;
+            
+            // Formatare dată estetică
+            if(articol.created_at) {
+                document.getElementById('art-data').innerText = new Date(articol.created_at).toLocaleDateString('ro-RO');
+            }
+
+            // Preluare imagine
+            if(articol.imagine || articol.imagine_url) {
+                const imgEl = document.getElementById('art-imagine');
+                imgEl.src = articol.imagine || articol.imagine_url;
+                imgEl.style.display = 'block';
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', incarcaArticolComplet);
+    </script>
+</body>
+</html>

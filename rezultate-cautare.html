@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rezultate Căutare - Revista de Istorie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background-color: #FAF6F0; color: #1C1611; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        .results-container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .search-title { font-family: 'Cinzel', serif; font-size: 1.8rem; border-bottom: 1px solid #DCD5C9; padding-bottom: 10px; margin-bottom: 30px; }
+        .section-group { margin-bottom: 40px; }
+        .section-group h3 { font-family: 'Cinzel', serif; color: #C29B53; font-size: 1.2rem; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .result-item { background: #ffffff; border: 1px solid #DCD5C9; border-radius: 6px; padding: 15px 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s ease; cursor: pointer; }
+        .result-item:hover { transform: translateX(5px); border-color: #C29B53; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .result-info h4 { margin: 0 0 5px 0; font-size: 1.05rem; color: #1C1611; }
+        .result-info p { margin: 0; font-size: 0.85rem; color: #666; }
+        .badge-type { background: #1C1611; color: #FAF6F0; padding: 4px 8px; font-size: 0.7rem; font-weight: 600; border-radius: 4px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <!-- Header-ul tău simplificat pentru navigare înapoi -->
+    <header class="main-header" style="background: #1C1611; padding: 15px 0;">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; max-width: 1000px; margin: 0 auto; padding: 0 20px;">
+            <div class="logo" style="color: #fff; display: flex; align-items: center; gap: 10px; cursor: pointer;" onclick="window.location.href='index.html'">
+                <i class="fa-solid fa-greece-building" style="color: #C29B53;"></i>
+                <span style="font-family: 'Cinzel', serif; font-weight: bold; letter-spacing: 1px;">REVISTA DE ISTORIE</span>
+            </div>
+            <a href="index.html" style="color: #C29B53; text-decoration: none; font-size: 0.9rem; font-weight: 500;"><i class="fa-solid fa-arrow-left"></i> Înapoi la site</a>
+        </div>
+    </header>
+
+    <main class="results-container">
+        <h2 class="search-title">Rezultatele căutării pentru: „<span id="search-term-text" style="color: #C29B53;">...</span>”</h2>
+        
+        <div id="loading-status" style="text-align: center; color: #8C8275; padding: 40px 0;">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem; margin-bottom: 10px;"></i>
+            <p style="margin: 0;">Se caută în baza de date...</p>
+        </div>
+
+        <div id="results-target"></div>
+    </main>
+
+    <!-- INJECTARE SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://vkulkgccczdvvjweduos.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrdWxrZ2NjY3pkdnZqd2VkdW9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTE1NTEsImV4cCI6MjA5ODkyNzU1MX0.FttuCZisUYebymZZgIZ75YSB12CrNXZh4naJzbVSn8E";
+        const _supabaseSearch = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function pornesteCautarea() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const query = urlParams.get('q');
+
+            if (!query) {
+                document.getElementById('loading-status').innerHTML = "❌ Nu a fost introdus niciun termen de căutare.";
+                return;
+            }
+
+            document.getElementById('search-term-text').innerText = query;
+
+            try {
+                // Executăm căutări paralele în cele 3 tabele folosind filtrul ilike (case-insensitive)
+                const [artRes, projRes, bacRes] = await Promise.all([
+                    _supabaseSearch.from('articole').select('id, titlu, categorie').ilike('titlu', `%${query}%`),
+                    _supabaseSearch.from('proiecte').select('id, nume_proiect, elev').ilike('nume_proiect', `%${query}%`),
+                    _supabaseSearch.from('subiecte_bac').select('an, sesiune, profil, fisier_url').ilike('sesiune', `%${query}%`)
+                ]);
+
+                document.getElementById('loading-status').style.display = 'none';
+                const target = document.getElementById('results-target');
+                let htmlTotal = "";
+                let areRezultate = false;
+
+                // 1. AFIȘARE ARTICOLE GĂSITE
+                if (artRes.data && artRes.data.length > 0) {
+                    areRezultate = true;
+                    htmlTotal += `<div class="section-group"><h3>📰 Articole (${artRes.data.length})</h3>`;
+                    artRes.data.forEach(art => {
+                        htmlTotal += `
+                            <div class="result-item" onclick="window.location.href='articol.html?id=${art.id}'">
+                                <div class="result-info">
+                                    <h4>${art.titlu}</h4>
+                                    <p>Categorie: ${art.categorie || 'General'}</p>
+                                </div>
+                                <span class="badge-type">Articol</span>
+                            </div>`;
+                    });
+                    htmlTotal += `</div>`;
+                }
+
+                // 2. AFIȘARE PROIECTE GĂSITE
+                if (projRes.data && projRes.data.length > 0) {
+                    areRezultate = true;
+                    htmlTotal += `<div class="section-group"><h3>📜 Proiectele Elevilor (${projRes.data.length})</h3>`;
+                    projRes.data.forEach(p => {
+                        htmlTotal += `
+                            <div class="result-item" onclick="window.location.href='proiect.html?id=${p.id}'">
+                                <div class="result-info">
+                                    <h4>${p.nume_proiect}</h4>
+                                    <p>Realizat de: ${p.elev || 'Elev'}</p>
+                                </div>
+                                <span class="badge-type" style="background:#C29B53; color:#1C1611;">Proiect</span>
+                            </div>`;
+                    });
+                    htmlTotal += `</div>`;
+                }
+
+                // 3. AFIȘARE SUBIECTE BAC GĂSITE (sau după an)
+                // Dacă nu găsește după sesiune, mai facem o verificare rapidă după an dacă query-ul e număr
+                let dateBac = bacRes.data || [];
+                if (dateBac.length === 0 && !isNaN(query)) {
+                    const { data: bacAn } = await _supabaseSearch.from('subiecte_bac').select('an, sesiune, profil, fisier_url').eq('an', parseInt(query));
+                    if (bacAn) dateBac = bacAn;
+                }
+
+                if (dateBac.length > 0) {
+                    areRezultate = true;
+                    htmlTotal += `<div class="section-group"><h3>🎓 Subiecte BAC (${dateBac.length})</h3>`;
+                    dateBac.forEach(b => {
+                        // Folosim noul sistem implementat anterior: deschidere în pagina de vizualizare custom
+                        const vizUrl = `vizualizare-subiect.html?url=${encodeURIComponent(b.fisier_url)}&titlu=${encodeURIComponent('BAC ' + b.an + ' ' + b.sesiune)}`;
+                        htmlTotal += `
+                            <div class="result-item" onclick="window.open('${vizUrl}', '_blank')">
+                                <div class="result-info">
+                                    <h4>BAC Istorie ${b.an} - ${b.sesiune}</h4>
+                                    <p>Profil: ${b.profil || 'Toate profilurile'}</p>
+                                </div>
+                                <span class="badge-type" style="background:#8C8275;">Subiect BAC</span>
+                            </div>`;
+                    });
+                    htmlTotal += `</div>`;
+                }
+
+                if (!areRezultate) {
+                    target.innerHTML = `
+                        <div style="text-align:center; padding:40px; color:#666;">
+                            <i class="fa-solid fa-folder-open" style="font-size:2.5rem; color:#DCD5C9; margin-bottom:15px;"></i>
+                            <p>Nu s-a găsit niciun rezultat potrivit pentru „${query}”. Încearcă alte cuvinte cheie (ex: „2026”, „Mediu”, „Modern”).</p>
+                        </div>`;
+                } else {
+                    target.innerHTML = htmlTotal;
+                }
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('loading-status').innerHTML = "❌ A apărut o eroare neașteptată la căutare.";
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', pornesteCautarea);
+    </script>
+</body>
+</html>

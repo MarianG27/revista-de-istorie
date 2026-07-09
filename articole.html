@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articole de Istorie - Revista de Istorie</title>
+    <!-- Fonturi Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Folosim exact același fișier de stiluri -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="citat">
+                „Cine nu cunoaște trecutul, este condomnat să-l repete.” – <span class="autor">George Santayana</span>
+            </div>
+            <div class="top-bar-right">
+                <div class="search-box">
+    <input type="text" id="globalSearchInput" placeholder="Caută în site..." onkeypress="if(event.key === 'Enter') executaCautareGala()">
+    <button onclick="executaCautareGala()"><i class="fa-solid fa-magnifying-glass"></i></button>
+</div>
+
+<script>
+function executaCautareGala() {
+    const termen = document.getElementById('globalSearchInput').value.trim();
+    if (termen.length > 1) {
+        // Redirecționează către pagina de rezultate cu termenul ca parametru în URL
+        window.location.href = 'rezultate-cautare.html?q=' + encodeURIComponent(termen);
+    }
+}
+</script>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER PRINCIPAL -->
+    <header class="main-header">
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fa-solid fa-greece-building logo-icon"></i>
+                <div class="logo-text">
+                    <h1>REVISTA</h1>
+                    <h2>DE ISTORIE</h2>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">ACASĂ</a></li>
+                    <li><a href="articole.html" class="active">ARTICOLE</a></li>
+                    <li><a href="proiecte.html">PROIECTELE ELEVILOR</a></li>
+                    <li><a href="bac.html">SUBIECTE BAC</a></li>
+                    <li><a href="despre.html">DESPRE REVISTĂ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- BANNER PAGINĂ: ARTICOLE DE ISTORIE -->
+    <section class="page-banner" style="background-image: linear-gradient(rgba(28, 22, 17, 0.75), rgba(28, 22, 17, 0.75)), url('https://images.unsplash.com/photo-1447958272669-9c562446304f?auto=format&fit=crop&q=80&w=1400');">
+        <div class="container">
+            <h2>ARTICOLE DE ISTORIE</h2>
+            <div class="banner-divider">♦</div>
+        </div>
+    </section>
+
+    <!-- SECTIUNE FILTRE ȘI CONȚINUT -->
+    <div class="container articles-page-wrapper">
+        
+       <div class="filter-search-bar">
+    <div class="filter-search-input">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Caută un articol...">
+    </div>
+    
+    <div class="categories-slider-wrapper">
+        <button class="slider-arrow prev-arrow" id="slide-left" style="display: none;">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        
+        <div class="filter-tags" id="dynamic-categories-list">
+            <button class="filter-btn active" data-categorie="toate">TOATE</button>
+        </div>
+        
+        <button class="slider-arrow next-arrow" id="slide-right">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+    </div>
+
+        <!-- STRUCTURA PE DOUĂ COLOANE -->
+        <div class="main-content-layout">
+            
+            <!-- STÂNGA: Articol Recomandat + Grila de Articole -->
+            <div class="left-articles-column">
+                
+                <!-- Articolul Recomandat din Pagina de Articole -->
+
+                <div class="featured-article-horizontal">
+                   
+                </div>
+
+                <div class="section-sub-title">
+                    <h3>TOATE ARTICOLELE</h3>
+                </div>
+
+                <!-- Grila de Articole de pe Pagina 2 (2 coloane x 3 rânduri) -->
+                <div class="inner-articles-grid">
+                    
+                </div>
+
+            </div>
+
+            <!-- DREAPTA: Sidebar (Articole Populare, Categorii, Etichete, Citat) -->
+            <aside class="right-sidebar-column">
+                
+                 <div class="sidebar-widget">
+                    <h3>ARTICOLE POPULARE</h3>
+                     <div class="widget-divider"></div>
+                    <div class="pop-articles-list" id="lista-articole-populare-sidebar"></div>
+                </div>
+
+                <!-- Secțiunea Categorii -->
+                <div class="sidebar-widget">
+    <h3>CATEGORII</h3>
+    <div class="widget-divider"></div>
+    <ul class="categories-list" id="lista-categorii-public">
+        </ul>
+</div>
+
+                <!-- Secțiunea Etichete 
+                <div class="sidebar-widget">
+                    <h3>ETICHETE POPULARE</h3>
+                    <div class="widget-divider"></div>
+                    <div class="tags-cloud">
+                        <a href="#">#romania</a>
+                        <a href="#">#evulmediu</a>
+                        <a href="#">#antichitate</a>
+                        <a href="#">#unire</a>
+                        <a href="#">#razboie</a>
+                        <a href="#">#istorie</a>
+                        <a href="#">#cultura</a>
+                        <a href="#">#civilizatii</a>
+                    </div>
+                </div> -->
+
+                <!-- Citatul stilizat din Sidebar -->
+                <div class="sidebar-quote-box">
+                    <p class="quote-text">„Istoria este învățătoarea vieții.”</p>
+                    <p class="quote-author">— Cicero</p>
+                </div>
+
+            </aside>
+
+        </div>
+    </div>
+
+   </div> <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-citat">
+                <p class="citat-text">„Istoria este învățătoarea vieții.”</p>
+                <p class="citat-autor">— Cicero</p>
+            </div>
+            <div class="footer-newsletter" style="max-width: 280px; opacity: 0.6;">
+    <h4 style="font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 8px; color: #8C8275;">ABONEAZĂ-TE LA NOUTĂȚI (INDISPONIBIL)</h4>
+    <form class="newsletter-form" style="display: flex; gap: 5px; pointer-events: none;">
+        <input type="email" 
+               placeholder="Indisponibil temporar..." 
+               disabled 
+               style="font-size: 0.75rem; padding: 6px 10px; background: #2d2722; border: 1px solid #443c35; color: #777; cursor: not-allowed; width: 100%;">
+        <button type="submit" 
+                disabled 
+                style="font-size: 0.7rem; padding: 6px 10px; background: #554e48; color: #888; border: none; cursor: not-allowed; white-space: nowrap;">
+            ABONEAZĂ-TE
+        </button>
+    </form>
+</div>
+            <div class="footer-right" style="display: flex; flex-direction: column; gap: 20px;">
+    <div class="footer-links-group">
+        <h4 style="font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 12px; color: #8C8275; text-transform: uppercase;">Linkuri Utile</h4>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+            <li><a href="index.html" style="color: #FAF6F0; text-decoration: none; font-size: 0.85rem; opacity: 0.8; transition: opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">Acasă</a></li>
+            <li><a href="proiecte.html" style="color: #FAF6F0; text-decoration: none; font-size: 0.85rem; opacity: 0.8; transition: opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">Proiecte Elevi</a></li>
+            <li><a href="bac.html" style="color: #FAF6F0; text-decoration: none; font-size: 0.85rem; opacity: 0.8; transition: opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">Subiecte BAC</a></li>
+        </ul>
+    </div>
+        </div>
+    </footer>
+    
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL_ART = "https://vkulkgccczdvvjweduos.supabase.co";
+    const SUPABASE_KEY_ART = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrdWxrZ2NjY3pkdnZqd2VkdW9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTE1NTEsImV4cCI6MjA5ODkyNzU1MX0.FttuCZisUYebymZZgIZ75YSB12CrNXZh4naJzbVSn8E";
+    
+    const _supabaseGrid = supabase.createClient(SUPABASE_URL_ART, SUPABASE_KEY_ART);
+
+    let toateArticolele = []; 
+    let articoleFiltrate = []; 
+    let categorieCurenta = "toate";
+    let textCautatCurent = "";
+    let paginaCurenta = 1;
+    const articolePePagina = 8;
+
+    async function incarcaDatele() {
+        // 1. Încărcăm mai întâi categoriile din tabelul dedicat
+        await incarcaCategoriiDinamice();
+
+        // 2. Încărcăm articolele
+        const { data: articole, error } = await _supabaseGrid
+            .from('articole')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error("Eroare la preluarea articolelor:", error);
+            return;
+        }
+
+        toateArticolele = articole || [];
+        
+        // Generăm live categoriile în sidebar
+        genereazaCategoriiSidebar();
+
+        // [CORECTAT - AICI LIPSEA APAREALEA] Generăm live articolele populare în sidebar
+        genereazaArticolePopulareSidebar();
+
+        // Aplicăm logica de filtrare și căutare inițială
+        aplicaFiltreSiCautare();
+
+        // Ascultăm evenimentul de scriere în bara de căutare
+        const searchInput = document.querySelector('.filter-search-input input');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                textCautatCurent = e.target.value.trim().toLowerCase();
+                aplicaFiltreSiCautare();
+            });
+        }
+
+        // Activăm funcționalitatea săgeților de la slider
+        initSliderSaget();
+    }
+
+    // Funcție care aduce categoriile din Supabase și creează butoanele din slider
+    async function incarcaCategoriiDinamice() {
+        const containerCategorii = document.getElementById('dynamic-categories-list');
+        if (!containerCategorii) return;
+
+        const { data: categorii, error } = await _supabaseGrid
+            .from('categorii')
+            .select('*')
+            .order('nume', { ascending: true });
+
+        if (error) {
+            console.error("Eroare la încărcarea categoriilor:", error);
+            return;
+        }
+
+        containerCategorii.innerHTML = '<button class="filter-btn active" data-categorie="toate">TOATE</button>';
+
+        // Generăm dinamic butoanele noi
+        categorii.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'filter-btn';
+            btn.setAttribute('data-categorie', cat.nume.toLowerCase());
+            btn.textContent = cat.nume.toUpperCase();
+            containerCategorii.appendChild(btn);
+        });
+
+        // Adăugăm evenimentul de click pe butoanele proaspăt create
+        const butoane = containerCategorii.querySelectorAll('.filter-btn');
+        butoane.forEach(btn => {
+            btn.addEventListener('click', function() {
+                butoane.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                categorieCurenta = this.getAttribute('data-categorie');
+                aplicaFiltreSiCautare();
+            });
+        });
+    }
+
+    // Combină filtrarea pe categorii cu căutarea din bară
+    function aplicaFiltreSiCautare() {
+        let rezultate = [...toateArticolele];
+
+        // Filtrare după categorie
+        if (categorieCurenta !== "toate") {
+            rezultate = rezultate.filter(art => (art.categorie || "").toLowerCase() === categorieCurenta);
+        }
+
+        // Filtrare după textul căutat
+        if (textCautatCurent.length > 0) {
+            gestioneazaArticolRecomandat(true); // Ascundem recomandatul dacă se caută text
+            rezultate = rezultate.filter(art => {
+                const titlu = (art.titlu || "").toLowerCase();
+                const continut = (art.continut || "").toLowerCase();
+                const autor = (art.autor || "").toLowerCase();
+                return titlu.includes(textCautatCurent) || continut.includes(textCautatCurent) || autor.includes(textCautatCurent);
+            });
+        } else {
+            // Dacă nu scrie nimic în bară, decidem dacă arătăm recomandatul
+            gestioneazaArticolRecomandat(false);
+        }
+
+        articoleFiltrate = rezultate;
+        afiseazaPagina(1);
+    }
+
+    function gestioneazaArticolRecomandat(esteInModCautare = false) {
+        const zonaRecomandat = document.querySelector('.featured-article-horizontal');
+        if (!zonaRecomandat) return;
+
+        if (esteInModCautare || toateArticolele.length === 0) {
+            zonaRecomandat.style.display = "none";
+            return;
+        }
+
+        let articolRecomandat = toateArticolele.find(art => art.recomandat === true);
+        if (!articolRecomandat) {
+            articolRecomandat = toateArticolele[0];
+        }
+
+        if (categorieCurenta !== "toate" && (articolRecomandat.categorie || "").toLowerCase() !== categorieCurenta) {
+            zonaRecomandat.style.display = "none";
+            return;
+        }
+
+        zonaRecomandat.style.display = "flex";
+
+        const poza = articolRecomandat.imagine || 'https://images.unsplash.com/photo-1599733589046-10c005739ef9?auto=format&fit=crop&q=80&w=500';
+        const categorie = articolRecomandat.categorie || 'ISTORIE';
+        const dataCreare = articolRecomandat.created_at ? new Date(articolRecomandat.created_at).toLocaleDateString('ro-RO') : 'Recent';
+        
+        zonaRecomandat.innerHTML = `
+            <img src="${poza}" alt="${articolRecomandat.titlu}">
+            <div class="featured-horiz-content">
+                <span class="feat-badge">ARTICOL RECOMANDAT</span>
+                <span class="feat-epoch">${categorie.toUpperCase()}</span>
+                <h3>${articolRecomandat.titlu}</h3>
+                <div class="article-meta">
+                    <span><i class="fa-solid fa-user"></i> de ${articolRecomandat.autor || 'Admin'}</span>
+                    <span><i class="fa-solid fa-calendar-days"></i> ${dataCreare}</span>
+                </div>
+                <p>${articolRecomandat.continut ? articolRecomandat.continut.substring(0, 160) + '...' : ''}</p>
+                <a href="javascript:void(0)" onclick="deschideSiContorizeazaArticol('${articolRecomandat.id}')" class="btn-citeste-art">CITEȘTE ARTICOLUL <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        `;
+    }
+
+    // Logica pentru deplasarea listei cu ajutorul săgeților (< și >)
+    function initSliderSaget() {
+        const container = document.getElementById('dynamic-categories-list');
+        const btnStanga = document.getElementById('slide-left');
+        const btnDreapta = document.getElementById('slide-right');
+
+        if (!container || !btnStanga || !btnDreapta) return;
+
+        function verificaVizibilitateSaget() {
+            if (container.scrollLeft > 5) {
+                btnStanga.style.display = "flex";
+            } else {
+                btnStanga.style.display = "none";
+            }
+
+            const maxScroll = container.scrollWidth - container.clientWidth;
+            if (container.scrollLeft >= maxScroll - 5) {
+                btnDreapta.style.display = "none";
+            } else {
+                btnDreapta.style.display = "flex";
+            }
+        }
+
+        btnDreapta.addEventListener('click', () => {
+            container.scrollLeft += 200;
+        });
+
+        btnStanga.addEventListener('click', () => {
+            container.scrollLeft -= 200;
+        });
+
+        container.addEventListener('scroll', verificaVizibilitateSaget);
+        window.addEventListener('resize', verificaVizibilitateSaget);
+        
+        setTimeout(verificaVizibilitateSaget, 300);
+    }
+
+    function afiseazaPagina(pagina) {
+        paginaCurenta = pagina;
+        const grilaArticole = document.querySelector('.inner-articles-grid');
+        if (!grilaArticole) return;
+
+        grilaArticole.innerHTML = "";
+
+        const start = (pagina - 1) * articolePePagina;
+        const end = start + articolePePagina;
+        const articolePaginaCurenta = articoleFiltrate.slice(start, end);
+
+        if (articolePaginaCurenta.length === 0) {
+            grilaArticole.innerHTML = `<p style="text-align: center; width: 100%; grid-column: span 2; color: #aaa; font-family: 'Inter', sans-serif;">Nu s-a găsit niciun articol.</p>`;
+            genereazaButoanePaginare();
+            return;
+        }
+
+        articolePaginaCurenta.forEach(articol => {
+            const poza = articol.imagine || 'https://images.unsplash.com/photo-1440342192762-2a67a5482e1b?auto=format&fit=crop&q=80&w=400';
+            const categorie = articol.categorie || 'ISTORIE';
+            const dataCreare = articol.created_at ? new Date(articol.created_at).toLocaleDateString('ro-RO') : 'Recent';
+
+            let badgeRecomandatHTML = "";
+            if (articol.recomandat === true) {
+                badgeRecomandatHTML = `<span class="art-badge-tag" style="background: #ffcc00; color: #000; margin-bottom: 5px; position: relative; display: inline-block;">RECOMANDAT</span>`;
+            }
+
+            const cardHtml = `
+                <div class="grid-art-card">
+                    <div class="grid-art-img">
+                        <img src="${poza}" alt="${articol.titlu}">
+                        <div style="position: absolute; top: 10px; left: 10px; display: flex; flex-direction: column; gap: 5px; z-index: 2;">
+                            ${badgeRecomandatHTML}
+                            <span class="art-badge-tag" style="position: relative; top: 0; left: 0;">${categorie.toUpperCase()}</span>
+                        </div>
+                    </div>
+                    <div class="grid-art-info">
+                        <h4>${articol.titlu}</h4>
+                        <div class="art-meta-small">
+                            <span><i class="fa-solid fa-user"></i> ${articol.autor || 'Admin'}</span>
+                            <span><i class="fa-solid fa-calendar"></i> ${dataCreare}</span>
+                        </div>
+                        <p>${articol.continut ? articol.continut.substring(0, 100) + '...' : ''}</p>
+                        <a href="javascript:void(0)" onclick="deschideSiContorizeazaArticol('${articol.id}')" class="read-more-link">CITEȘTE ARTICOLUL <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            `;
+            grilaArticole.innerHTML += cardHtml;
+        });
+
+        genereazaButoanePaginare();
+    }
+
+    function genereazaButoanePaginare() {
+        const containerPaginare = document.querySelector('.pagination');
+        if (!containerPaginare) return;
+        containerPaginare.innerHTML = "";
+
+        const numarTotalPagini = Math.ceil(articoleFiltrate.length / articolePePagina);
+        if (numarTotalPagini <= 1) return;
+
+        for (let i = 1; i <= numarTotalPagini; i++) {
+            const buton = document.createElement('button');
+            buton.innerText = i;
+            buton.className = (i === paginaCurenta) ? 'pag-number active' : 'pag-number';
+            buton.addEventListener('click', () => afiseazaPagina(i));
+            containerPaginare.appendChild(buton);
+        }
+    }
+    
+    function genereazaCategoriiSidebar() {
+        const container = document.getElementById('lista-categorii-public');
+        const butoaneCategorii = document.querySelectorAll('#dynamic-categories-list .filter-btn');
+        if (!container || butoaneCategorii.length === 0) return;
+
+        container.innerHTML = "";
+
+        butoaneCategorii.forEach(btn => {
+            const numeCategorieSlug = btn.getAttribute('data-categorie');
+            if (numeCategorieSlug === 'toate') return;
+
+            const numeCategorieAfisat = btn.textContent.trim();
+            const nrArticole = toateArticolele.filter(art => (art.categorie || "").toLowerCase() === numeCategorieSlug).length;
+
+            const li = document.createElement('li');
+            li.style.cursor = "pointer";
+            
+            li.onclick = () => {
+                const sliderBtn = document.querySelector(`#dynamic-categories-list .filter-btn[data-categorie="${numeCategorieSlug}"]`);
+                if (sliderBtn) sliderBtn.click();
+            };
+
+            li.innerHTML = `
+                <span>${numeCategorieAfisat}</span> 
+                <span class="cat-count">${nrArticole} ${nrArticole === 1 ? 'articol' : 'articole'}</span>
+            `;
+            container.appendChild(li);
+        });
+
+        const liTotal = document.createElement('li');
+        liTotal.style.cursor = "pointer";
+        liTotal.style.borderTop = "1px dashed #c5a880";
+        liTotal.style.marginTop = "10px";
+        liTotal.style.paddingTop = "10px";
+        
+        liTotal.onclick = () => {
+            const btnToate = document.querySelector('#dynamic-categories-list .filter-btn[data-categorie="toate"]');
+            if (btnToate) btnToate.click();
+        };
+
+        liTotal.innerHTML = `
+            <span style="font-weight: bold; color: #c5a880;">TOTAL ARTICOLE</span> 
+            <span class="cat-count" style="font-weight: bold; color: #c5a880;">${toateArticolele.length}</span>
+        `;
+        container.appendChild(liTotal);
+    }
+
+    // Funcția care trimite +1 vizualizare în Supabase și te trimite la pagină
+    async function deschideSiContorizeazaArticol(articolId) {
+        const articol = toateArticolele.find(a => a.id == articolId);
+        const vizualizariCurente = articol ? (articol.vizualizari || 0) : 0;
+
+        await _supabaseGrid
+            .from('articole')
+            .update({ vizualizari: vizualizariCurente + 1 })
+            .eq('id', articolId);
+
+        window.location.href = `articol.html?id=${articolId}`;
+    }
+
+    // Funcția care pune în Sidebar cele mai accesate 3 articole
+    function genereazaArticolePopulareSidebar() {
+        const container = document.getElementById('lista-articole-populare-sidebar');
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        // Sortăm descrescător după vizualizări și luăm primele 3
+        const topArticole = [...toateArticolele]
+            .sort((a, b) => (b.vizualizari || 0) - (a.vizualizari || 0))
+            .slice(0, 3);
+
+        topArticole.forEach((articol, index) => {
+            const poza = articol.imagine || 'https://images.unsplash.com/photo-1599733589046-10c005739ef9?auto=format&fit=crop&q=80&w=100';
+            const vizualizari = articol.vizualizari || 0;
+
+            const item = document.createElement('div');
+            item.className = "pop-art-item";
+            item.style.cursor = "pointer";
+            item.onclick = () => deschideSiContorizeazaArticol(articol.id);
+
+            item.innerHTML = `
+                <span class="pop-number">${index + 1}</span>
+                <img src="${poza}" alt="${articol.titlu}">
+                <div class="pop-art-meta">
+                    <h5>${articol.titlu}</h5>
+                    <span style="font-size: 11px; color: #888;"><i class="fa-solid fa-eye"></i> ${vizualizari} vizualizări</span>
+                </div>
+            `;
+            container.appendChild(item);
+        });
+    }
+
+    window.addEventListener('DOMContentLoaded', incarcaDatele);
+</script>
+
+</body>
+</html>

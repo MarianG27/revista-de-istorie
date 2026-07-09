@@ -1,0 +1,1615 @@
+/* RESETARE ȘI VARIABILE GLOBALE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-cream: #F4F1EA;       /* Fundalul texturat al paginii */
+    --dark-brown: #1C1611;     /* Maroul închis din header/footer */
+    --gold: #C29B53;           /* Auriul elegant pentru accente */
+    --text-dark: #2C2520;      /* Culoarea textului de bază */
+    --text-light: #E6E1DA;     /* Text deschis pe fundal închis */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-cream);
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* TOP BAR STYLING */
+.top-bar {
+    background-color: #ECE7DD;
+    border-bottom: 1px solid #DCD5C9;
+    padding: 8px 0;
+    font-size: 0.85rem;
+}
+
+.top-bar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.citat {
+    font-style: italic;
+    color: #554C42;
+}
+
+.citat .autor {
+    font-weight: 500;
+}
+
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #C4BBAF;
+    padding: 2px 2px 2px 10px;
+    height: 32px;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    font-size: 0.8rem;
+    width: 180px;
+    font-family: 'Inter', sans-serif;
+}
+
+.search-box button {
+    background: var(--dark-brown);
+    color: white;
+    border: none;
+    height: 26px;
+    width: 30px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.search-box button:hover {
+    background: var(--gold);
+}
+
+.social-links a {
+    color: var(--dark-brown);
+    margin-left: 12px;
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+
+.social-links a:hover {
+    color: var(--gold);
+}
+
+/* MAIN HEADER STYLING */
+.main-header {
+    background-color: var(--dark-brown);
+    padding: 20px 0;
+    border-bottom: 3px solid var(--gold);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* LOGO */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: var(--gold);
+}
+
+.logo-icon {
+    font-size: 2.5rem;
+}
+
+.logo-text h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    line-height: 1;
+    font-weight: 400;
+    color: var(--text-light);
+}
+
+.logo-text h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    letter-spacing: 4px;
+    color: var(--gold);
+    font-weight: 400;
+}
+
+/* NAVIGARE */
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.main-nav a {
+    color: #B5AEA5;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+    position: relative;
+    padding-bottom: 5px;
+}
+
+.main-nav a:hover, 
+.main-nav a.active {
+    color: var(--gold);
+}
+
+/* Linia de sub link-ul activ (ca în imagine) */
+.main-nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 25%;
+    width: 50%;
+    height: 2px;
+    background-color: var(--gold);
+}
+
+.nav-arrow {
+    font-size: 0.7rem;
+    margin-left: 3px;
+}
+/* WRAPPER COLOANE PRINCIPALE */
+.main-content-wrapper {
+    display: grid;
+    grid-template-columns: 2.2fr 1fr; /* Împarte ecranul în ~68% stânga și ~32% dreapta */
+    gap: 30px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+/* STILIZARE SLIDER (STÂNGA) */
+.hero-slider {
+    width: 100%;
+}
+
+.slider-item {
+    background-size: cover;
+    background-position: center;
+    border-radius: 6px;
+    min-height: 520px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 50px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.slider-content {
+    max-width: 500px;
+    color: var(--text-light);
+}
+
+.slider-content .badge {
+    background-color: #8C251C; /* Roșu închis stil catifea/sigiliu */
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    letter-spacing: 1px;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.slider-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    font-weight: 400;
+    color: #FFFFFF;
+}
+
+.slider-excerpt {
+    font-size: 0.95rem;
+    color: #D5CFC6;
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+.btn-citeste {
+    background-color: #5C1E18;
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-radius: 2px;
+    transition: background 0.2s;
+    display: inline-block;
+}
+
+.btn-citeste:hover {
+    background-color: var(--gold);
+}
+
+.slider-dots {
+    position: absolute;
+    bottom: 30px;
+    left: 50px;
+    display: flex;
+    gap: 8px;
+}
+
+.dot {
+    width: 100%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: white;
+    transform: scale(1.1);
+}
+
+/* STILIZARE SIDEBAR PROIECTE (DREAPTA) */
+.sidebar-projects {
+    background: #EFECE4;
+    border: 1px solid #DCD5C9;
+    border-radius: 6px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    border-bottom: 1px solid #D1C7B7;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.sidebar-header h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    color: #443B33;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.icon-sidebar {
+    color: var(--gold);
+}
+
+.projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-grow: 1;
+}
+
+.project-card {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.project-card img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #D1C7B7;
+}
+
+.project-info h4 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.author-info {
+    font-size: 0.8rem;
+    color: #6E6458;
+}
+
+.contest-info {
+    font-size: 0.75rem;
+    color: #948879;
+    margin-bottom: 5px;
+}
+
+.btn-vezi {
+    color: #5C1E18;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+    display: inline-block;
+}
+
+.btn-vezi i {
+    font-size: 0.7rem;
+    transition: transform 0.2s;
+}
+
+.btn-vezi:hover {
+    color: var(--gold);
+}
+
+.btn-vezi:hover i {
+    transform: translateX(3px);
+}
+
+/* BUTONUL MARE DE JOS CU BACKGROUND AURIU */
+.btn-toate-proiectele {
+    background-color: var(--gold);
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    padding: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    margin-top: 25px;
+    transition: background 0.2s;
+}
+
+.btn-toate-proiectele:hover {
+    background-color: var(--dark-brown);
+}
+
+/* RESPONSIVENESS: Dacă ecranul e mic, le punem una sub alta */
+@media (max-width: 992px) {
+    .main-content-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+/* SECTION MULTIMEDIA GRID WRAPPER */
+.multimedia-wrapper {
+    display: grid;
+    grid-template-columns: 2.2fr 1fr; /* Păstrează proporția exactă de sus */
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+/* TITLURI SECȚIUNI (STIL COMUN) */
+.section-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #DCD5C9;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    color: #443B33;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon-gold {
+    color: var(--gold);
+}
+
+.btn-vezi-toate {
+    color: #5C1E18;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+}
+
+.btn-vezi-toate:hover {
+    color: var(--gold);
+}
+
+/* GRILA ARTICOLE (4 COLOANE) */
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.article-card {
+    background: #FFFFFF;
+    border: 1px solid #E3DCCE;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    display: flex;
+    flex-direction: column;
+}
+
+.article-img-wrapper {
+    position: relative;
+    width: 100%;
+    height: 140px;
+}
+
+.article-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Eticheta mică cu Epoca */
+.epoch-badge {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #8C251C;
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    letter-spacing: 0.5px;
+}
+
+.article-card-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.article-card-content h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1.3;
+    margin-bottom: 10px;
+    /* Efect de tăiere text la maxim 2 rânduri dacă titlul e prea lung */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+}
+
+.article-date {
+    font-size: 0.75rem;
+    color: #A19686;
+}
+
+.article-date i {
+    margin-right: 3px;
+}
+
+/* GRILA FOTO (DREAPTA - 3x2) */
+.photo-gallery-section {
+    background: #EFECE4;
+    border: 1px solid #DCD5C9;
+    border-radius: 6px;
+    padding: 20px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.gallery-item {
+    aspect-ratio: 1 / 1; /* Forțează imaginile să fie pătrate perfecte */
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid #D1C7B7;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.gallery-item img:hover {
+    transform: scale(1.08);
+}
+
+/* RESPONSIVENESS */
+@media (max-width: 1200px) {
+    .articles-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 pe rând pe ecrane medii */
+    }
+}
+
+@media (max-width: 992px) {
+    .multimedia-wrapper {
+        grid-template-columns: 1fr; /* Toată lățimea pe ecrane mici */
+    }
+}
+
+@media (max-width: 576px) {
+    .articles-grid {
+        grid-template-columns: 1fr; /* 1 singur pe rând pe telefon */
+    }
+}
+/* STILIZARE FOOTER */
+.main-footer {
+    background-color: var(--dark-brown);
+    color: var(--text-light);
+    padding: 50px 0 30px 0;
+    border-top: 3px solid var(--gold);
+    font-size: 0.9rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr; /* Trei coloane relativ egale, cu mijlocul puțin mai lat */
+    gap: 40px;
+    align-items: flex-start;
+}
+
+/* Coloana 1: Citat */
+.footer-citat .citat-text {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #FFFFFF;
+    margin-bottom: 5px;
+}
+
+.footer-citat .citat-autor {
+    color: var(--gold);
+    font-weight: 500;
+}
+
+/* Coloana 2: Newsletter */
+.footer-newsletter h4, 
+.footer-right h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.footer-newsletter p {
+    color: #A59E95;
+    font-size: 0.8rem;
+    margin-bottom: 15px;
+}
+
+.newsletter-form {
+    display: flex;
+    height: 38px;
+}
+
+.newsletter-form input {
+    flex-grow: 1;
+    border: none;
+    padding: 0 15px;
+    font-size: 0.85rem;
+    outline: none;
+    background-color: #FFFFFF;
+    color: var(--text-dark);
+}
+
+.newsletter-form button {
+    background-color: var(--gold);
+    color: white;
+    border: none;
+    padding: 0 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.newsletter-form button:hover {
+    background-color: #A37F3F;
+}
+
+/* Coloana 3: Social & Copyright */
+.footer-social {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.footer-social a {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    transition: color 0.2s;
+}
+
+.footer-social a:hover {
+    color: var(--gold);
+}
+
+.copyright {
+    color: #7A7267;
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+/* RESPONSIVENESS FOOTER */
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr; /* Pe telefon se pun toate una sub alta */
+        text-align: center;
+        gap: 30px;
+    }
+    
+    .newsletter-form {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    .footer-social {
+        justify-content: center;
+    }
+}
+
+
+/* BANNER HERO PAGINI SECUNDARE */
+.page-banner {
+    background-size: cover;
+    background-position: center;
+    padding: 60px 0;
+    text-align: center;
+    color: white;
+}
+
+.page-banner h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    letter-spacing: 3px;
+    font-weight: 400;
+}
+
+.banner-divider {
+    color: var(--gold);
+    margin-top: 5px;
+    font-size: 0.9rem;
+}
+
+/* WRAPPER PAGINA DE ARTICOLE */
+.articles-page-wrapper {
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+/* BARA DE FILTRARE ȘI CĂUTARE */
+.filter-search-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 35px;
+}
+
+.filter-search-input {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #DCD5C9;
+    padding: 10px 15px;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.filter-search-input i {
+    color: #8A7E72;
+    margin-right: 10px;
+}
+
+.filter-search-input input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+.filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.filter-btn {
+    background: white;
+    border: 1px solid #DCD5C9;
+    padding: 8px 16px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #554C42;
+    cursor: pointer;
+    border-radius: 2px;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover, 
+.filter-btn.active {
+    background: var(--dark-brown);
+    color: white;
+    border-color: var(--dark-brown);
+}
+
+/* LAYOUT 2 COLOANE */
+.main-content-layout {
+    display: grid;
+    grid-template-columns: 2.2fr 1fr;
+    gap: 30px;
+}
+
+/* ARTICOL RECOMANDAT ORIZONTAL */
+.featured-article-horizontal {
+    display: flex;
+    background: white;
+    border: 1px solid #E3DCCE;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+}
+
+.featured-article-horizontal img {
+    width: 45%;
+    object-fit: cover;
+}
+
+.featured-horiz-content {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.feat-badge {
+    color: var(--gold);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.feat-epoch {
+    color: #8C251C;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.featured-horiz-content h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    line-height: 1.3;
+    margin-bottom: 12px;
+}
+
+.article-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 0.75rem;
+    color: #8A7E72;
+    margin-bottom: 15px;
+}
+
+.featured-horiz-content p {
+    font-size: 0.9rem;
+    color: #554C42;
+    margin-bottom: 20px;
+}
+
+.btn-citeste-art {
+    background: #5C1E18;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    align-self: flex-start;
+    transition: background 0.2s;
+}
+
+.btn-citeste-art:hover {
+    background: var(--gold);
+}
+
+.section-sub-title {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #DCD5C9;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.section-sub-title h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+}
+
+.section-sub-title a {
+    font-size: 0.75rem;
+    color: #5C1E18;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* GRILA INTERNĂ DE ARTICOLE (2 COLOANE) */
+.inner-articles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.grid-art-card {
+    background: white;
+    border: 1px solid #E3DCCE;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.grid-art-img {
+    position: relative;
+    height: 180px;
+}
+
+.grid-art-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.art-badge-tag {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #8C251C;
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 4px 10px;
+}
+
+.grid-art-info {
+    padding: 20px;
+}
+
+.grid-art-info h4 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.art-meta-small {
+    display: flex;
+    gap: 12px;
+    font-size: 0.75rem;
+    color: #9E9384;
+    margin-bottom: 12px;
+}
+
+.grid-art-info p {
+    font-size: 0.85rem;
+    color: #554C42;
+    margin-bottom: 15px;
+}
+
+.read-more-link {
+    color: #5C1E18;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* PAGINAȚIE */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 40px;
+}
+
+.pag-btn, .pag-number {
+    background: white;
+    border: 1px solid #DCD5C9;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text-dark);
+    transition: all 0.2s;
+}
+
+.pag-number.active, .pag-btn:hover, .pag-number:hover {
+    background: #5C1E18;
+    color: white;
+    border-color: #5C1E18;
+}
+
+.pag-dots {
+    color: #8A7E72;
+}
+
+/* SIDEBAR RIGHT WIDGETS */
+.right-sidebar-column {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.sidebar-widget {
+    background: #EFECE4;
+    border: 1px solid #DCD5C9;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.sidebar-widget h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+}
+
+.widget-divider {
+    height: 2px;
+    background: var(--gold);
+    width: 40px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+.pop-articles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.pop-art-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pop-number {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #5C1E18;
+    width: 20px;
+}
+
+.pop-art-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.pop-art-meta h5 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.pop-art-meta span {
+    font-size: 0.75rem;
+    color: #8A7E72;
+}
+
+/* CATEGORII LIST */
+.categories-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.categories-list li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    border-bottom: 1px dashed #DCD5C9;
+    padding-bottom: 5px;
+}
+
+.categories-list li i {
+    color: var(--gold);
+    margin-right: 5px;
+    width: 15px;
+}
+
+.cat-count {
+    color: #8A7E72;
+    font-size: 0.75rem;
+}
+
+/* CLOUD TAGS */
+.tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tags-cloud a {
+    background: white;
+    border: 1px solid #DCD5C9;
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    color: #554C42;
+    text-decoration: none;
+    border-radius: 2px;
+}
+
+.tags-cloud a:hover {
+    background: var(--dark-brown);
+    color: white;
+}
+
+/* SIDEBAR CITAT STILIZAT */
+.sidebar-quote-box {
+    background-image: linear-gradient(rgba(239, 236, 228, 0.9), rgba(239, 236, 228, 0.9)), url('https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&q=80&w=200');
+    background-size: cover;
+    border: 1px solid #DCD5C9;
+    padding: 30px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+.sidebar-quote-box .quote-text {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+}
+
+.sidebar-quote-box .quote-author {
+    color: var(--gold);
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+/* RESPONSIVENESS PAGINA 2 */
+@media (max-width: 992px) {
+    .main-content-layout {
+        grid-template-columns: 1fr;
+    }
+    .featured-article-horizontal {
+        flex-direction: column;
+    }
+    .featured-article-horizontal img {
+        width: 100%;
+        height: 250px;
+    }
+}
+
+@media (max-width: 650px) {
+    .inner-articles-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* Elimină stilul implicit de link de pe carduri și adaugă un efect fin de zoom */
+.article-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.article-card-link:hover {
+    transform: translateY(-4px); /* Cardul se ridică puțin când pui mouse-ul pe el */
+}
+
+.article-card-link:hover h4 {
+    color: #5C1E18; /* Titlul articolului devine roșiatic la hover */
+}
+
+/* FILTRE AVANSATE PAGINA PROIECTE */
+.advanced-filter-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) 1.2fr;
+    gap: 15px;
+    background: white;
+    border: 1px solid #DCD5C9;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 35px;
+}
+
+.dropdown-filter {
+    display: flex;
+    align-items: center;
+    border: 1px solid #DCD5C9;
+    padding: 8px 12px;
+    background: #FAF8F5;
+    border-radius: 4px;
+}
+
+.dropdown-filter select {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #554C42;
+    cursor: pointer;
+}
+
+.icon-filter {
+    color: var(--gold);
+    margin-right: 10px;
+    font-size: 0.9rem;
+}
+
+.project-search {
+    display: flex;
+    align-items: center;
+    border: 1px solid #DCD5C9;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.project-search input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 0.85rem;
+}
+
+.project-search i {
+    color: #8A7E72;
+}
+
+/* GRILA CATALOG PROIECTE (2 COLOANE) */
+.projects-catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.catalog-project-card {
+    background: white;
+    border: 1px solid #E3DCCE;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.catalog-proj-img {
+    position: relative;
+    height: 160px;
+}
+
+.catalog-proj-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ETICHETE COLORATE DUPĂ TIP FIȘIER */
+.file-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+}
+
+.file-badge.pdf { background-color: #E04343; }       /* Roșu pentru PDF */
+.file-badge.pptx { background-color: #E26E26; }      /* Portocaliu pentru PPTX */
+.file-badge.docx { background-color: #2B72C4; }      /* Albastru pentru DOCX */
+.file-badge.folder { background-color: #F1B624; color: #333; } /* Galben pentru Foldere/Arhive */
+
+.catalog-proj-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.catalog-proj-body h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-dark);
+}
+
+.proj-detail {
+    font-size: 0.8rem;
+    color: #7A6F62;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.proj-detail i {
+    color: var(--gold);
+    width: 12px;
+}
+
+.proj-footer {
+    margin-top: 15px;
+    border-top: 1px dashed #E3DCCE;
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file-size {
+    font-size: 0.75rem;
+    color: #A19686;
+    font-weight: 500;
+}
+
+.btn-action-proj {
+    background: #5C1E18;
+    color: white;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 2px;
+    transition: background 0.2s;
+}
+
+.btn-action-proj:hover {
+    background: var(--gold);
+}
+
+/* WIDGET STATISTICI */
+.stats-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.stat-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: white;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #DCD5C9;
+}
+
+.stat-box i {
+    font-size: 1.5rem;
+    width: 30px;
+    text-align: center;
+}
+
+.text-red { color: #E04343; }
+.text-gold { color: var(--gold); }
+.text-brown { color: #5C1E18; }
+
+.stat-info h5 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.stat-info p {
+    font-size: 0.75rem;
+    color: #7A6F62;
+}
+
+/* BARA INFORMATIVĂ DE JOS */
+.project-info-footer-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    background: #EFECE4;
+    border: 1px solid #DCD5C9;
+    padding: 25px;
+    border-radius: 6px;
+    margin-top: 50px;
+}
+
+.info-footer-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.info-footer-item i {
+    font-size: 2rem;
+}
+
+.info-footer-item h5 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.info-footer-item p {
+    font-size: 0.8rem;
+    color: #6E6458;
+}
+
+/* RESPONSIVENESS PAGINA 3 */
+@media (max-width: 992px) {
+    .advanced-filter-bar {
+        grid-template-columns: 1fr;
+    }
+    .project-info-footer-bar {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 650px) {
+    .projects-catalog-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Stiluri pentru Slider-ul de Categorii */
+.categories-slider-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 15px;
+    gap: 10px;
+}
+
+.filter-tags {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    width: 100%;
+    padding: 5px 0;
+}
+
+/* Ascundem bara de scroll urâtă din browser ca să rămână doar săgețile */
+.filter-tags::-webkit-scrollbar {
+    display: none;
+}
+.filter-tags {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Stiluri pentru butoanele-săgeată */
+.slider-arrow {
+    background: #1c1611;
+    color: #fff;
+    border: 1px solid #c5a880;
+    border-radius: 5px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex-shrink: 0;
+    font-size: 14px;
+}
+
+.slider-arrow:hover {
+    background: #c5a880;
+    color: #1c1611;
+}
+
+.filter-btn {
+    white-space: nowrap; /* Împiedică textul lung să se rupă pe două rânduri */
+    flex-shrink: 0;
+}
+
+.admin-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+    padding: 10px;
+    background: #fdfaf6;
+    border: 1px solid #e2d7c7;
+    border-radius: 5px;
+}
+
+.admin-cat-tag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #1c1611;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    border: 1px solid #c5a880;
+}
+
+.admin-cat-tag span {
+    font-weight: 500;
+}
+
+.cat-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 2px;
+    transition: transform 0.2s;
+}
+.cat-action-btn:hover { transform: scale(1.2); }
+
+.btn-edit-art {
+    background: #c5a880;
+    color: #1c1611;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+.btn-edit-art:hover { background: #b3956b; }
+
+.btn-delete-art {
+    background: #d9534f;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+}
+.btn-delete-art:hover { background: #c9302c; }
+
+.category-actions {
+    display: flex;
+    gap: 10px;
+}
+.category-actions input {
+    padding: 8px;
+    width: 250px;
+}
+.category-actions button {
+    background: #1c1611;
+    color: #c5a880;
+    border: 1px solid #c5a880;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+.admin-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+    padding: 15px;
+    background: #1c1611;
+    border: 1px solid #c5a880;
+    border-radius: 5px;
+}
+.admin-cat-tag {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #2a221a;
+    color: #fff;
+    padding: 6px 15px;
+    border-radius: 4px;
+    border: 1px solid #c5a880;
+}
+.cat-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Asigură-te că containerul imaginii permite poziționarea absolută */
+.catalog-proj-img {
+    position: relative;
+    overflow: hidden;
+}
+/* ==========================================
+   STILURI REPARATE PENTRU CATALOGUL DE PROIECTE
+   ========================================== */
+
+/* Containerul imaginii din card - limitat corect ca înălțime */
+.catalog-proj-img {
+    position: relative;
+    overflow: hidden;
+    height: 200px; /* Previne imaginile uriașe */
+}
+
+.catalog-proj-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Tipul de fișier (Pătrățel mic, discret și elegant în colț) */
+.file-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 45px;         /* Lățime fixă mică */
+    height: 24px;        /* Înălțime mică */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.65rem;   /* Text foarte mic, finuț */
+    letter-spacing: 0.5px;
+    border-radius: 4px;
+    z-index: 3;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    text-transform: uppercase;
+}
+
+/* Culorile de fundal oficiale pentru fiecare tip de fișier */
+.file-badge.pdf  { background: #e74c3c !important; color: #fff !important; }
+.file-badge.pptx, 
+.file-badge.ppt  { background: #d35400 !important; color: #fff !important; }
+.file-badge.docx, 
+.file-badge.doc  { background: #2980b9 !important; color: #fff !important; }
+.file-badge.zip, 
+.file-badge.rar  { background: #f39c12 !important; color: #fff !important; }
+.file-badge.png, 
+.file-badge.jpg  { background: #2ecc71 !important; color: #fff !important; }
+.file-badge.html  { background: hsl(301, 85%, 49%) !important; color: #fff !important; }
+
+/* Ajustare pentru textul premiului de jos din corp */
+.proj-premiu-gold {
+    color: #c29b53 !important; 
+    font-weight: 700; 
+    font-size: 0.85rem; 
+    margin: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.proj-premiu-gold i {
+    color: #c29b53 !important;
+}
+
