@@ -1599,6 +1599,180 @@ body {
 .file-badge.jpg  { background: #2ecc71 !important; color: #fff !important; }
 .file-badge.html  { background: hsl(301, 85%, 49%) !important; color: #fff !important; }
 
+/* ==========================================
+   FIX-URI RESPONSIVE MOBIL (MENIU, HEADER, SLIDER, PDF)
+   ========================================== */
+
+/* Buton hamburger - ascuns pe desktop */
+.nav-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 1.2rem;
+    width: 42px;
+    height: 38px;
+    border-radius: 4px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-toggle:hover {
+    background: var(--gold);
+    color: var(--dark-brown);
+}
+
+@media (max-width: 992px) {
+    .header-content {
+        flex-wrap: wrap;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    .main-nav {
+        display: none;
+        width: 100%;
+        order: 3;
+        margin-top: 18px;
+    }
+
+    .main-nav.is-open {
+        display: block;
+    }
+
+    .main-nav ul {
+        flex-direction: column;
+        gap: 0;
+        border-top: 1px solid #33291f;
+    }
+
+    .main-nav a {
+        display: block;
+        padding: 14px 5px;
+        border-bottom: 1px solid #33291f;
+        font-size: 0.9rem;
+    }
+
+    .main-nav a.active::after {
+        display: none;
+    }
+}
+
+/* Top bar: citatul și căutarea nu mai încap pe un rând pe telefon */
+@media (max-width: 768px) {
+    .top-bar-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .citat {
+        font-size: 0.8rem;
+    }
+
+    .search-box input {
+        width: 100%;
+    }
+
+    .top-bar-right {
+        width: 100%;
+    }
+
+    .top-bar-right .search-box {
+        width: 100%;
+    }
+
+    .logo-icon {
+        font-size: 1.9rem;
+    }
+
+    .logo-text h1 {
+        font-size: 1.25rem;
+    }
+
+    .logo-text h2 {
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+    }
+}
+
+/* ---- BANNER MARE / SLIDER ARTICOLE RECOMANDATE ----
+   Pe telefon imaginea era prea înaltă (deci apărea decupată/mai mică vizual)
+   iar punctele de jos rămâneau ascunse sub butonul "CITEȘTE ARTICOLUL". */
+@media (max-width: 992px) {
+    .slider-item {
+        min-height: 420px;
+        padding: 30px;
+        align-items: flex-end;
+    }
+
+    .slider-content {
+        max-width: 100%;
+        padding-bottom: 40px;
+    }
+}
+
+@media (max-width: 576px) {
+    .slider-item {
+        min-height: 380px;
+        padding: 20px;
+    }
+
+    .slider-content {
+        padding-bottom: 38px;
+    }
+
+    .slider-title {
+        font-size: 1.4rem;
+        margin-bottom: 12px;
+    }
+
+    .slider-excerpt {
+        font-size: 0.82rem;
+        margin-bottom: 18px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .btn-citeste {
+        padding: 10px 18px;
+        font-size: 0.8rem;
+    }
+
+    .badge-slider {
+        font-size: 0.68rem;
+        padding: 3px 8px;
+    }
+}
+
+/* Punctele (dots) de sub slider - ținute mereu vizibile, deasupra butonului */
+.slider-dots {
+    z-index: 15;
+}
+
+.slider-dots .dot,
+.dot {
+    z-index: 15;
+}
+
+/* Grila de filtre din pagina de subiecte BAC - se rearanjează pe telefon */
+.bac-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+@media (max-width: 600px) {
+    .bac-filter-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Ajustare pentru textul premiului de jos din corp */
 .proj-premiu-gold {
     color: #c29b53 !important; 

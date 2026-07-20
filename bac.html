@@ -101,6 +101,9 @@ function executaCautareGala() {
                     <h2>DE ISTORIE</h2>
                 </div>
             </div>
+            <button class="nav-toggle" onclick="document.querySelector('.main-nav').classList.toggle('is-open')" aria-label="Deschide meniul">
+                <i class="fa-solid fa-bars"></i>
+            </button>
             <nav class="main-nav">
                 <ul>
                     <li><a href="index.html">ACASĂ</a></li>
@@ -132,7 +135,7 @@ function executaCautareGala() {
 
     <main style="max-width: 1200px; margin: 40px auto; padding: 0 20px; box-sizing: border-box; flex: 1; width: 100%;">
         
-        <div style="background: #ffffff; border: 1px solid #DCD5C9; border-radius: 6px; padding: 20px; margin: 0 auto 40px auto; max-width: 900px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+        <div class="bac-filter-grid" style="background: #ffffff; border: 1px solid #DCD5C9; border-radius: 6px; padding: 20px; margin: 0 auto 40px auto; max-width: 900px; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
             <div>
                 <label style="font-size: 0.7rem; font-weight: 700; color: #8C8275; text-transform: uppercase; display: block; margin-bottom: 5px; font-family: 'Inter', sans-serif;"><i class="fa-solid fa-calendar"></i> Anul</label>
                 <select class="filter-select" id="yearSelect" onchange="applyFilters()">
